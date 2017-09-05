@@ -16,6 +16,7 @@ import { fetchMoreMessages } from '../services/conversation';
 import { getTop, getBoundingRect } from '../utils/dom';
 import { WIDGET_STATE } from '../constants/app';
 import { logo, logo2x } from '../constants/assets';
+import EmailCapture from "./EmailCapture";
 
 const INTRO_BOTTOM_SPACER = 10;
 const EXTRA_COMPONENT_BOTTOM_SPACER = 10;
@@ -205,7 +206,6 @@ export class ConversationComponent extends Component {
 
                 if (index === messages.length - 1) {
                     this._lastNode = findDOMNode(c);
-                    this._lastMessageId = message._id;
                 }
             };
 
@@ -223,6 +223,13 @@ export class ConversationComponent extends Component {
                                      {...message}
                                      lastInGroup={ lastInGroup } />;
         });
+
+        if (messages[messages.length - 1] &&
+            messages[messages.length - 1].metadata &&
+            messages[messages.length - 1].metadata.agents_unavailable_message
+        ) {
+            messageItems.push(<EmailCapture/>);
+        }
 
         if (typingIndicatorShown) {
             const refCallback = (c) => {
