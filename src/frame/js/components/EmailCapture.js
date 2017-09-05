@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import * as smooch from './../smooch';
 
 
-export default class EmailCapture extends Component {
+class EmailCapture extends Component {
     _sendEmail = () => {
         smooch.updateUser({email: this.state.email});
-        smooch.sendMessage(this.state.email);
+        smooch.sendMessage(this.props.text.replace('{email}', this.state.email));
     }
 
     render() {
@@ -25,3 +26,9 @@ export default class EmailCapture extends Component {
         );
     }
 }
+
+export default connect(({ui}) => {
+    return {
+        text: ui.text.afterEmailCaptureText
+    };
+})(EmailCapture);

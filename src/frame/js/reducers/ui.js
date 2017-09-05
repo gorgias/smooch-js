@@ -54,7 +54,10 @@ const INITIAL_STATE = {
         locationSendingFailed: 'Could not send location',
         locationServicesDenied: 'This website cannot access your location. Allow access in your settings or type your location instead.',
         locationNotSupported: 'Your browser does not support location services or it’s been disabled. Please type your location instead.',
-        locationSecurityRestriction: 'This website cannot access your location. Please type your location instead.'
+        locationSecurityRestriction: 'This website cannot access your location. Please type your location instead.',
+
+        // Gorgias-specific
+        afterEmailCaptureText: 'Email address {email} recorded!'
     }
 };
 
