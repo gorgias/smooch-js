@@ -10,13 +10,18 @@ export default class EmailCapture extends Component {
 
     render() {
         return (
-            <div className='gorgias-email-capture-wrapper'>
+            <form
+                className='gorgias-email-capture-wrapper'
+                onSubmit={this._sendEmail}
+            >
                 <input
                     placeholder="Give us your email and we'll contact you later"
                     onChange={(e) => this.setState({email: e.target.value})}
                 />
-                <button onClick={this._sendEmail}>Send</button>
-            </div>
+                <button onClick={this._sendEmail}>
+                    <i className='fa fa-paper-plane-o'/>
+                </button>
+            </form>
         );
     }
 }
