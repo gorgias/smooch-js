@@ -67,6 +67,7 @@
     "chai": "2.3.0",
     "chai-as-promised": "5.0.0",
     "chai-things": "0.2.0",
+    "classnames": "2.2.5",
     "css-loader": "0.28.4",
     "cssnano": "3.10.0",
     "deep-assign": "2.0.0",
