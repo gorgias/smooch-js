@@ -250,7 +250,7 @@ export class ConversationComponent extends Component {
             messages[messages.length - 1].metadata &&
             messages[messages.length - 1].metadata.agents_unavailable_message
         ) {
-            messageItems.push(<EmailCapture/>);
+            messageItems.push(<EmailCapture key='email-capture-widget'/>);
         }
 
         if (typingIndicatorShown) {

@@ -1,12 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux';
-import * as smooch from './../smooch';
+import * as webMessenger from './../web-messenger';
 
 
 class EmailCapture extends Component {
+    static propTypes = {
+        text: PropTypes.string.isRequired
+    }
+
     _sendEmail = () => {
-        smooch.updateUser({email: this.state.email});
-        smooch.sendMessage(this.props.text.replace('{email}', this.state.email));
+        webMessenger.updateUser({email: this.state.email});
+        webMessenger.sendMessage(this.props.text.replace('{email}', this.state.email));
     }
 
     render() {
