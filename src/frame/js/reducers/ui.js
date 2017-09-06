@@ -57,7 +57,7 @@ const INITIAL_STATE = {
         locationSecurityRestriction: 'This website cannot access your location. Please type your location instead.',
 
         // Gorgias-specific
-        afterEmailCaptureText: 'Email address {email} recorded!'
+        afterEmailCaptureText: 'My email address is {email}.'
     }
 };
 
