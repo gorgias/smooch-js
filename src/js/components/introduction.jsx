@@ -16,7 +16,7 @@ export class IntroductionComponent extends Component {
         dispatch: PropTypes.func.isRequired,
         appState: PropTypes.object.isRequired,
         app: PropTypes.object.isRequired,
-        introAppText: PropTypes.string.isRequired,
+        headerText: PropTypes.string.isRequired,
         introductionText: PropTypes.string.isRequired
     };
 
@@ -53,11 +53,7 @@ export class IntroductionComponent extends Component {
     }
 
     render() {
-        const {app, introductionText, introAppText} = this.props;
-        const channelDetailsList = getAppChannelDetails(app.integrations);
-
-        const channelsAvailable = channelDetailsList.length > 0;
-        const introText = channelsAvailable ? `${introductionText} ${introAppText}` : introductionText;
+        const {app, introductionText, headerText} = this.props;
 
         return (
             <div
@@ -77,11 +73,11 @@ export class IntroductionComponent extends Component {
                 }
                 <div className='text-column'>
                     <div className='app-name'>
-                        {app.name}
+                        {headerText}
                     </div>
                     <div
                         className='intro-text'
-                        dangerouslySetInnerHTML={createMarkup(introText)}
+                        dangerouslySetInnerHTML={createMarkup(introductionText)}
                     />
                 </div>
             </div>
@@ -96,7 +92,7 @@ export const Introduction = connect(({app, appState: {introHeight, widgetState},
             introHeight,
             widgetState
         },
-        introAppText: text.introAppText,
+        headerText: text.headerText,
         introductionText: text.introductionText
     };
 })(IntroductionComponent);
