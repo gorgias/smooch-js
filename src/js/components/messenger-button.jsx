@@ -34,7 +34,7 @@ export class MessengerButtonComponent extends Component {
 
     render() {
         const {unreadCount, shown, isWidgetOpen, settings} = this.props;
-        const {brandColor, isBrandColorDark, buttonIconUrl} = settings;
+        const {brandColor, buttonIconUrl} = settings;
 
         const style = {
             backgroundColor: `#${brandColor}`
@@ -48,7 +48,7 @@ export class MessengerButtonComponent extends Component {
                                src={ buttonIconUrl } />
                       </div>;
         } else {
-            icon = <DefaultButtonIcon key='2' isBrandColorDark={ isBrandColorDark } style={{position: 'absolute'}}/>;
+            icon = <DefaultButtonIcon key='2' style={{position: 'absolute'}}/>;
         }
 
         let unreadBadge;
@@ -70,7 +70,7 @@ export class MessengerButtonComponent extends Component {
                 })}
                 style={{position: 'absolute'}}
             >
-                <DefaultCloseIcon key='2' isBrandColorDark={ isBrandColorDark } style={{position: 'absolute'}}/>
+                <DefaultCloseIcon key='2' style={{position: 'absolute'}}/>
             </div>
 
             <div className={classnames('sk-messenger-icon', {'sk-messenger-icon-hidden-down': isWidgetOpen})}>
