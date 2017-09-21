@@ -78,7 +78,7 @@ class Message extends Component {
         } else if (hasText || hasFile) {
             lastItem = 'text';
         } else if (hasLocation) {
-            lastItem = 'location'
+            lastItem = 'location';
         }
 
         const avatarClass = hasImage ? ['sk-msg-avatar', 'sk-msg-avatar-img'] : ['sk-msg-avatar'];
