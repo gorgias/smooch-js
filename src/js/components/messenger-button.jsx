@@ -34,11 +34,7 @@ export class MessengerButtonComponent extends Component {
 
     render() {
         const {unreadCount, shown, isWidgetOpen, settings} = this.props;
-        const {brandColor, buttonIconUrl} = settings;
-
-        const style = {
-            backgroundColor: `#${brandColor}`
-        };
+        const {buttonIconUrl} = settings;
 
         let icon;
 
@@ -60,7 +56,6 @@ export class MessengerButtonComponent extends Component {
 
         return <div id='sk-messenger-button'
                     className={`messenger-button-${shown ? 'shown' : 'hidden'}`}
-                    style={style}
                     onClick={this.onClick}>
 
             <div

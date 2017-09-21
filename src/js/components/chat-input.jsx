@@ -15,7 +15,6 @@ export class ChatInputComponent extends Component {
         accentColor: PropTypes.string,
         imageUploadEnabled: PropTypes.bool.isRequired,
         inputPlaceholderText: PropTypes.string.isRequired,
-        sendButtonText: PropTypes.string.isRequired,
         unreadCount: PropTypes.number.isRequired,
         dispatch: PropTypes.func.isRequired
     };
@@ -77,7 +76,7 @@ export class ChatInputComponent extends Component {
     }
 
     render() {
-        const {accentColor, imageUploadEnabled, inputPlaceholderText, sendButtonText} = this.props;
+        const {accentColor, imageUploadEnabled, inputPlaceholderText} = this.props;
 
         let sendButton;
 
@@ -95,10 +94,14 @@ export class ChatInputComponent extends Component {
         if (isMobile.apple.device) {
             // Safari on iOS needs a way to send on click, without triggering a mouse event.
             // onTouchStart will do the trick and the input won't lose focus.
-            sendButton = <span ref='button'
-                               className={ buttonClassNames.join(' ') }
-                               onTouchStart={ this.onSendMessage }
-                               style={ buttonStyle }>{ sendButtonText }</span>;
+            sendButton = (
+                <span ref='button'
+                      className={buttonClassNames.join(' ')}
+                      onTouchStart={this.onSendMessage}
+                      style={buttonStyle}>
+                    <i className='fa fa-paper-plane'/>
+                </span>
+            );
         } else {
             sendButton = (
                 <a
@@ -139,7 +142,6 @@ export class ChatInputComponent extends Component {
                                 onFocus={this.onFocus}
                                 onKeyPress={this.onKeyPress}
                                 value={this.state.text}
-                                title={sendButtonText}
                                 rows='1'
                             />
                         </div>
@@ -156,7 +158,6 @@ export const ChatInput = connect(({appState, app, ui, conversation: {unreadCount
     return {
         imageUploadEnabled: appState.imageUploadEnabled,
         accentColor: app.settings.web.accentColor,
-        sendButtonText: ui.text.sendButtonText,
         inputPlaceholderText: ui.text.inputPlaceholder,
         unreadCount
     };
