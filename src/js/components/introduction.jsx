@@ -3,13 +3,10 @@ import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
 import { findDOMNode } from 'react-dom';
 
-import { AlternateChannels } from './alternate-channels';
-import { DefaultAppIcon } from './default-app-icon';
-
 import { setIntroHeight } from '../actions/app-state-actions';
+import { DefaultButtonIcon } from './default-button-icon';
 
 import { createMarkup } from '../utils/html';
-import { getAppChannelDetails } from '../utils/app';
 
 export class IntroductionComponent extends Component {
     static propTypes = {
@@ -68,7 +65,9 @@ export class IntroductionComponent extends Component {
                             src={app.iconUrl}
                         />
                     ) : (
-                        <DefaultAppIcon/>
+                        <div className='app-icon'>
+                            <DefaultButtonIcon />
+                        </div>
                     )
                 }
                 <div className='text-column'>
