@@ -56,7 +56,7 @@ module.exports = function(options) {
     const root = path.join(__dirname, 'src');
     const publicPath = options.devServer ?
         '/_assets/' :
-        'https://cdn.smooch.io/';
+        'https://acme-martin.ngrok.io/';  // todo(@martin): modify this URL before deploying
 
     const output = {
         path: options.outputPath || path.join(__dirname, 'dist'),
