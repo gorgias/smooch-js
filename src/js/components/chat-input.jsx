@@ -85,10 +85,6 @@ export class ChatInputComponent extends Component {
 
         if (this.state.text.trim()) {
             buttonClassNames.push('active');
-
-            if (accentColor) {
-                buttonStyle.color = '#$06D79C';
-            }
         }
 
         if (isMobile.apple.device) {
