@@ -56,7 +56,7 @@ module.exports = function(options) {
     const root = path.join(__dirname, 'src');
     const publicPath = options.devServer ?
         '/_assets/' :
-        'https://acme-martin.ngrok.io/';  // todo(@martin): modify this URL before deploying
+        'https://gorgias-assets.gorgias.io/static/public/js/smooch/';
 
     const output = {
         path: options.outputPath || path.join(__dirname, 'dist'),
