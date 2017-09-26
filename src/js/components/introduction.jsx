@@ -4,9 +4,9 @@ import debounce from 'lodash.debounce';
 import { findDOMNode } from 'react-dom';
 
 import { setIntroHeight } from '../actions/app-state-actions';
-import { DefaultButtonIcon } from './default-button-icon';
 
 import { createMarkup } from '../utils/html';
+import classnames from 'classnames';
 
 export class IntroductionComponent extends Component {
     static propTypes = {
@@ -50,26 +50,32 @@ export class IntroductionComponent extends Component {
     }
 
     render() {
-        const {app, introductionText, headerText} = this.props;
+        const {appState: {activeAgents, online}, introductionText, headerText} = this.props;
 
         return (
             <div
-                className='sk-intro-section'
+                className={classnames('sk-intro-section', {'online': online, 'offline': !online})}
                 ref='introductionContainer'
             >
-                {
-                    app.iconUrl ? (
-                        <img
-                            className='app-icon'
-                            alt='App icon'
-                            src={app.iconUrl}
-                        />
-                    ) : (
-                        <div className='app-icon'>
-                            <DefaultButtonIcon />
-                        </div>
-                    )
-                }
+                <div className='agent-avatars-wrapper'>
+                    {
+                        activeAgents.map((agent, idx) => {
+                            const first = idx === 0
+                            const last = idx === activeAgents.length - 1
+                            const middle = (!first && !last) || (idx === 1)
+
+                            return (
+                                <div
+                                    key={idx}
+                                    className={classnames('agent-avatar', {first, middle, last})}
+                                >
+                                    <img src={agent.avatar_url} />
+                                    <div className='online-marker'/>
+                                </div>
+                            );
+                        })
+                    }
+                </div>
                 <div className='text-column'>
                     <div className='app-name'>
                         {headerText}
@@ -84,10 +90,12 @@ export class IntroductionComponent extends Component {
     }
 }
 
-export const Introduction = connect(({app, appState: {introHeight, widgetState}, ui: {text}}) => {
+export const Introduction = connect(({app, appState: {introHeight, widgetState, activeAgents, online}, ui: {text}}) => {
     return {
         app,
         appState: {
+            activeAgents,
+            online,
             introHeight,
             widgetState
         },

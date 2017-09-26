@@ -168,6 +168,13 @@ export class Smooch {
             actions.push(AppStateActions.setServerURL(props.serviceUrl));
         }
 
+        // Active agents & Chat status
+        if (props.activeAgents) {
+            actions.push(AppStateActions.setActiveAgents(props.activeAgents));
+        } else {
+            actions.push(AppStateActions.setChatOffline());
+        }
+
         store.dispatch(batchActions(actions));
 
         unsubscribeFromStore = observeStore(store, ({conversation}) => conversation, onStoreChange);

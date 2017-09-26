@@ -140,4 +140,81 @@
             }
         }
     }
+
+    .agent-avatars-wrapper {
+        display: flex;
+        align-items: center;
+        border-color: #3f6ad3;
+
+        .agent-avatar {
+            position: relative;
+            margin-right: -15px;
+            border-color: inherit;
+
+            img {
+                border-radius: 50px;
+                border-color: inherit;
+                border-style: solid;
+                border-width: 3px;
+            }
+
+            .online-marker {
+                position: absolute;
+                bottom: 1%;
+                width: 11px;
+                height: 11px;
+                right: 18%;
+                background: #13e29a;
+                border-radius: 10px;
+                border-color: inherit;
+                border-style: solid;
+                border-width: 3px;
+            }
+
+            &.first {
+                z-index: 1;
+
+                img {
+                    width: 42px;
+                }
+            }
+
+            &.middle {
+                z-index: 3;
+
+                img {
+                    width: 50px !important;
+                }
+
+                .online-marker {
+                    right: 10%;
+                    width: 14px;
+                    height: 14px;
+                }
+            }
+
+            &.last {
+                z-index: 2;
+                margin-right: 0;
+
+                img {
+                    width: 42px;
+                }
+            }
+
+            &.first.last {
+                margin-right: 0;
+
+                img {
+                    width: 50px !important;
+                }
+
+                .online-marker {
+                    right: 10%;
+                    width: 14px;
+                    height: 14px;
+                }
+            }
+        }
+    }
 }

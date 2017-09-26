@@ -2,6 +2,8 @@ import * as AppStateActions from '../actions/app-state-actions';
 import { RESET } from '../actions/common-actions';
 import { RESET_CONVERSATION, ADD_MESSAGE } from '../actions/conversation-actions';
 import { WIDGET_STATE } from '../constants/app';
+import {SET_ACTIVE_AGENTS} from "../actions/app-state-actions";
+import {SET_CHAT_OFFLINE} from "../actions/app-state-actions";
 
 const INITIAL_STATE = {
     settingsVisible: false,
@@ -23,7 +25,11 @@ const INITIAL_STATE = {
     typingIndicatorShown: false,
     typingIndicatorAvatarUrl: null,
     typingIndicatorName: null,
-    typingIndicatorTimeoutId: null
+    typingIndicatorTimeoutId: null,
+
+    // Gorgias variables
+    activeAgents: [],
+    online: true
 };
 
 export function AppStateReducer(state = INITIAL_STATE, action) {
@@ -224,6 +230,19 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
             }
 
             return state;
+
+        // Gorgias handlers
+        case SET_ACTIVE_AGENTS:
+            return {
+                ...state,
+                activeAgents: action.activeAgents
+            };
+
+        case SET_CHAT_OFFLINE:
+            return {
+                ...state,
+                online: false
+            }
 
         default:
             return state;
