@@ -50,19 +50,19 @@ export class IntroductionComponent extends Component {
     }
 
     render() {
-        const {appState: {activeAgents, online}, introductionText, headerText} = this.props;
+        const {appState: {activeAgents, isChatOnline}, introductionText, headerText, offlineIntroductionText} = this.props;
 
         return (
             <div
-                className={classnames('sk-intro-section', {'online': online, 'offline': !online})}
+                className={classnames('sk-intro-section', {'online': isChatOnline, 'offline': !isChatOnline})}
                 ref='introductionContainer'
             >
-                <div className='agent-avatars-wrapper'>
+                <div className={classnames('agent-avatars-wrapper', {offline: !isChatOnline})}>
                     {
                         activeAgents.map((agent, idx) => {
-                            const first = idx === 0
-                            const last = idx === activeAgents.length - 1
-                            const middle = (!first && !last) || (idx === 1)
+                            const first = idx === 0;
+                            const last = idx === activeAgents.length - 1;
+                            const middle = (!first && !last) || (idx === 1);
 
                             return (
                                 <div
@@ -70,7 +70,9 @@ export class IntroductionComponent extends Component {
                                     className={classnames('agent-avatar', {first, middle, last})}
                                 >
                                     <img src={agent.avatar_url} />
-                                    <div className='online-marker'/>
+                                    {
+                                        isChatOnline && <div className='online-marker'/>
+                                    }
                                 </div>
                             );
                         })
@@ -82,7 +84,7 @@ export class IntroductionComponent extends Component {
                     </div>
                     <div
                         className='intro-text'
-                        dangerouslySetInnerHTML={createMarkup(introductionText)}
+                        dangerouslySetInnerHTML={createMarkup(isChatOnline ? introductionText : offlineIntroductionText)}
                     />
                 </div>
             </div>
@@ -90,16 +92,17 @@ export class IntroductionComponent extends Component {
     }
 }
 
-export const Introduction = connect(({app, appState: {introHeight, widgetState, activeAgents, online}, ui: {text}}) => {
+export const Introduction = connect(({app, appState: {introHeight, widgetState, activeAgents, isChatOnline}, ui: {text}}) => {
     return {
         app,
         appState: {
             activeAgents,
-            online,
+            isChatOnline,
             introHeight,
             widgetState
         },
         headerText: text.headerText,
-        introductionText: text.introductionText
+        introductionText: text.introductionText,
+        offlineIntroductionText: text.offlineIntroductionText
     };
 })(IntroductionComponent);

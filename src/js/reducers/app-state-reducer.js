@@ -29,7 +29,7 @@ const INITIAL_STATE = {
 
     // Gorgias variables
     activeAgents: [],
-    online: true
+    isChatOnline: true
 };
 
 export function AppStateReducer(state = INITIAL_STATE, action) {
@@ -241,7 +241,7 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
         case SET_CHAT_OFFLINE:
             return {
                 ...state,
-                online: false
+                isChatOnline: false
             }
 
         default:

@@ -169,9 +169,11 @@ export class Smooch {
         }
 
         // Active agents & Chat status
-        if (props.activeAgents) {
+        if (props.activeAgents && props.activeAgents.length) {
             actions.push(AppStateActions.setActiveAgents(props.activeAgents));
-        } else {
+        }
+
+        if (props.isChatOnline === false) {
             actions.push(AppStateActions.setChatOffline());
         }
 
