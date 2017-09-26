@@ -12,7 +12,9 @@
                 animation-fill-mode: both;
 
         @media (max-width: @screen-sm-min) {
-            animation-duration: 0s;
+            opacity: 1;
+            animation: none;
+            -webkit-animation: none;
         }
     }
 
@@ -25,7 +27,10 @@
                 animation-fill-mode: both;
 
         @media (max-width: @screen-sm-min) {
-            animation-duration: 0s;
+            opacity: 0;
+            transform: scale(0, 0);
+            animation: none;
+            -webkit-animation: none;
         }
     }
 
