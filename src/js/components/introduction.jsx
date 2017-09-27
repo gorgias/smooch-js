@@ -50,7 +50,7 @@ export class IntroductionComponent extends Component {
     }
 
     render() {
-        const {appState: {activeAgents, isChatOnline}, introductionText, headerText, offlineIntroductionText} = this.props;
+        const {appState: {displayAgents, isChatOnline}, introductionText, headerText, offlineIntroductionText} = this.props;
 
         return (
             <div
@@ -59,9 +59,9 @@ export class IntroductionComponent extends Component {
             >
                 <div className={classnames('agent-avatars-wrapper', {offline: !isChatOnline})}>
                     {
-                        activeAgents.map((agent, idx) => {
+                        displayAgents.map((agent, idx) => {
                             const first = idx === 0;
-                            const last = idx === activeAgents.length - 1;
+                            const last = idx === displayAgents.length - 1;
                             const middle = (!first && !last) || (idx === 1);
 
                             return (
@@ -92,11 +92,11 @@ export class IntroductionComponent extends Component {
     }
 }
 
-export const Introduction = connect(({app, appState: {introHeight, widgetState, activeAgents, isChatOnline}, ui: {text}}) => {
+export const Introduction = connect(({app, appState: {introHeight, widgetState, displayAgents, isChatOnline}, ui: {text}}) => {
     return {
         app,
         appState: {
-            activeAgents,
+            displayAgents,
             isChatOnline,
             introHeight,
             widgetState

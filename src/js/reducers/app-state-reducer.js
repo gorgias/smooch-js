@@ -2,7 +2,7 @@ import * as AppStateActions from '../actions/app-state-actions';
 import { RESET } from '../actions/common-actions';
 import { RESET_CONVERSATION, ADD_MESSAGE } from '../actions/conversation-actions';
 import { WIDGET_STATE } from '../constants/app';
-import {SET_ACTIVE_AGENTS} from "../actions/app-state-actions";
+import {SET_DISPLAY_AGENTS} from "../actions/app-state-actions";
 import {SET_CHAT_OFFLINE} from "../actions/app-state-actions";
 
 const INITIAL_STATE = {
@@ -28,7 +28,7 @@ const INITIAL_STATE = {
     typingIndicatorTimeoutId: null,
 
     // Gorgias variables
-    activeAgents: [],
+    displayAgents: [],
     isChatOnline: true
 };
 
@@ -232,10 +232,10 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
             return state;
 
         // Gorgias handlers
-        case SET_ACTIVE_AGENTS:
+        case SET_DISPLAY_AGENTS:
             return {
                 ...state,
-                activeAgents: action.activeAgents
+                displayAgents: action.displayAgents
             };
 
         case SET_CHAT_OFFLINE:

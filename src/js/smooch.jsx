@@ -169,8 +169,8 @@ export class Smooch {
         }
 
         // Active agents & Chat status
-        if (props.activeAgents && props.activeAgents.length) {
-            actions.push(AppStateActions.setActiveAgents(props.activeAgents));
+        if (props.displayAgents && props.displayAgents.length) {
+            actions.push(AppStateActions.setDisplayAgents(props.displayAgents));
         }
 
         if (props.isChatOnline === false) {

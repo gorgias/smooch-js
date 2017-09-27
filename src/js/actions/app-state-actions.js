@@ -27,7 +27,7 @@ export const SET_FETCHING_MORE_MESSAGES = 'SET_FETCHING_MORE_MESSAGES';
 export const SET_SHOULD_SCROLL_TO_BOTTOM = 'SET_SHOULD_SCROLL_TO_BOTTOM';
 export const SHOW_TYPING_INDICATOR = 'SHOW_TYPING_INDICATOR';
 export const HIDE_TYPING_INDICATOR = 'HIDE_TYPING_INDICATOR';
-export const SET_ACTIVE_AGENTS = 'SET_ACTIVE_AGENTS';
+export const SET_DISPLAY_AGENTS = 'SET_DISPLAY_AGENTS';
 export const SET_CHAT_OFFLINE = 'SET_CHAT_OFFLINE';
 
 export function toggleWidget() {
@@ -209,10 +209,10 @@ export function hideTypingIndicator() {
     };
 }
 
-export function setActiveAgents(activeAgents) {
+export function setDisplayAgents(displayAgents) {
     return {
-        type: SET_ACTIVE_AGENTS,
-        activeAgents
+        type: SET_DISPLAY_AGENTS,
+        displayAgents
     };
 }
 
