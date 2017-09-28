@@ -12,8 +12,8 @@ import { setShouldScrollToBottom, setFetchingMoreMessages } from '../actions/app
 import { fetchMoreMessages } from '../services/conversation';
 import { getTop, getBoundingRect } from '../utils/dom';
 import debounce from 'lodash.debounce';
+import {EmailCapture} from './email-capture';
 
-const INTRO_BOTTOM_SPACER = 10;
 const EXTRA_COMPONENT_BOTTOM_SPACER = 10;
 const LOAD_MORE_LINK_HEIGHT = 47;
 
@@ -218,6 +218,13 @@ export class ConversationComponent extends Component {
                                      {...message}
                                      lastInGroup={ lastInGroup } />;
         });
+
+        if (messages[messages.length - 1] &&
+            messages[messages.length - 1].metadata &&
+            messages[messages.length - 1].metadata.email_capture_trigger
+        ) {
+            messageItems.push(<EmailCapture key='email-capture-widget'/>);
+        }
 
         if (typingIndicatorShown) {
             const refCallback = (c) => {
