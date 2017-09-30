@@ -31,7 +31,10 @@ export class ConversationComponent extends Component {
         settings: PropTypes.object.isRequired,
         text: PropTypes.object.isRequired,
         typingIndicatorShown: PropTypes.bool.isRequired,
-        replyActions: PropTypes.array.isRequired
+        replyActions: PropTypes.array.isRequired,
+
+        // Gorgias
+        userEmail: PropTypes.bool.isRequired
     };
 
     debounceOnScroll = debounce(() => {
@@ -184,7 +187,7 @@ export class ConversationComponent extends Component {
     }
 
     render() {
-        const {connectNotificationTimestamp, introHeight, messages, replyActions, errorNotificationMessage, isFetchingMoreMessages, hasMoreMessages, text, settings, typingIndicatorShown, typingIndicatorName} = this.props;
+        const {connectNotificationTimestamp, messages, replyActions, errorNotificationMessage, isFetchingMoreMessages, hasMoreMessages, text, settings, typingIndicatorShown, typingIndicatorName, userEmail} = this.props;
         const {fetchingHistory, fetchHistory} = text;
         const {accentColor, linkColor} = settings;
 
@@ -210,6 +213,17 @@ export class ConversationComponent extends Component {
                 lastInGroup = false;
             }
 
+            if (message.metadata && message.metadata.email_capture_trigger) {
+                return (
+                    <EmailCapture
+                        key='email-capture-widget'
+                        userEmail={userEmail}
+                    />
+                );
+            } else if (message.metadata && message.metadata.email_capture_thanks_trigger) {
+                return <div key='empty'/>;
+            }
+
             return <MessageComponent key={ message._clientId || message._id }
                                      ref={ refCallback }
                                      accentColor={ accentColor }
@@ -218,13 +232,6 @@ export class ConversationComponent extends Component {
                                      {...message}
                                      lastInGroup={ lastInGroup } />;
         });
-
-        if (messages[messages.length - 1] &&
-            messages[messages.length - 1].metadata &&
-            messages[messages.length - 1].metadata.email_capture_trigger
-        ) {
-            messageItems.push(<EmailCapture key='email-capture-widget'/>);
-        }
 
         if (typingIndicatorShown) {
             const refCallback = (c) => {
@@ -337,7 +344,7 @@ export class ConversationComponent extends Component {
     }
 }
 
-export const Conversation = connect(({appState, conversation, ui: {text}, app}) => {
+export const Conversation = connect(({appState, conversation, ui: {text}, app, user: {email}}) => {
     return {
         messages: conversation.messages,
         replyActions: conversation.replyActions,
@@ -354,6 +361,9 @@ export const Conversation = connect(({appState, conversation, ui: {text}, app}) 
             fetchHistory: text.fetchHistory
         },
         typingIndicatorShown: appState.typingIndicatorShown,
-        typingIndicatorName: appState.typingIndicatorName
+        typingIndicatorName: appState.typingIndicatorName,
+
+        // Gorgias
+        userEmail: email
     };
 })(ConversationComponent);

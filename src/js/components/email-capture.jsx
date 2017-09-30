@@ -2,50 +2,94 @@ import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux';
 import { sendMessage } from '../services/conversation';
 import { update } from '../services/user';
+import classnames from 'classnames';
 
 
 class EmailCaptureComponent extends Component {
     static propTypes = {
-        text: PropTypes.string.isRequired,
         placeholder: PropTypes.string.isRequired,
+        userEmail: PropTypes.bool.isRequired,
+        isChatOnline: PropTypes.bool.isRequired,
         dispatch: PropTypes.func.isRequired
     }
 
-    _sendEmail = () => {
+    _sendEmail = (event) => {
+        event.preventDefault()
+
         const {dispatch} = this.props;
         dispatch(update({email: this.state.email}));
         dispatch(sendMessage({
-            text: this.props.text.replace('{email}', this.state.email),
+            text: this.state.email,
             metadata: {
-                type: 'gorgias-email-capture-thanks-trigger'
+                email_capture_thanks_trigger: true
             }
         }));
+        this.setState({isCompleted: true});
+    }
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            isCompleted: !!this.props.userEmail
+        };
     }
 
     render() {
-        const {placeholder} = this.props;
+        const {
+            placeholder, isChatOnline,
+            onlineTriggerText, onlineThanksText,
+            offlineTriggerText, offlineThanksText,
+            userEmail
+        } = this.props;
+
+        const {isCompleted} = this.state
 
         return (
-            <form
-                className='gorgias-email-capture-wrapper'
-                onSubmit={this._sendEmail}
-            >
-                <input
-                    placeholder={placeholder}
-                    onChange={(e) => this.setState({email: e.target.value})}
-                />
-                <button onClick={this._sendEmail}>
-                    <i className='fa fa-paper-plane-o'/>
-                </button>
-            </form>
+            <div className='gorgias-email-capture-wrapper'>
+                <div className='gorgias-email-capture-label'>
+                    {
+                        isCompleted ? (
+                            <div className='completed'>
+                                <div className='icon-circle'>
+                                    <i className='fa fa-check'/>
+                                </div>
+                                {
+                                    isChatOnline
+                                        ? onlineThanksText.replace('{email}', userEmail)
+                                        : offlineThanksText.replace('{email}', userEmail)}
+                            </div>
+                        ) : (
+                            isChatOnline ? onlineTriggerText : offlineTriggerText
+                        )
+                    }
+                </div>
+                <form
+                    className={classnames('gorgias-email-capture-form', {
+                        'hidden': isCompleted
+                    })}
+                    onSubmit={this._sendEmail}
+                >
+                    <input
+                        placeholder={placeholder}
+                        onChange={(e) => this.setState({email: e.target.value})}
+                    />
+                    <button onClick={this._sendEmail}>
+                        <i className='fa fa-paper-plane-o'/>
+                    </button>
+                </form>
+            </div>
         );
     }
 }
 
-export const EmailCapture = connect(({ui}) => {
+export const EmailCapture = connect(({ui, appState: {isChatOnline}}) => {
     return {
-        text: ui.text.afterEmailCaptureText,
-        placeholder: ui.text.emailCapturePlaceholder
+        isChatOnline: isChatOnline,
+        placeholder: ui.text.emailCapturePlaceholder,
+        onlineTriggerText: ui.text.emailCaptureOnlineTriggerText,
+        onlineThanksText: ui.text.emailCaptureOnlineThanksText,
+        offlineTriggerText: ui.text.emailCaptureOfflineTriggerText,
+        offlineThanksText: ui.text.emailCaptureOfflineThanksText
     };
 }, undefined, undefined, {
     withRef: true
