@@ -34,7 +34,7 @@ export class ConversationComponent extends Component {
         replyActions: PropTypes.array.isRequired,
 
         // Gorgias
-        userEmail: PropTypes.bool.isRequired
+        userEmail: PropTypes.string
     };
 
     debounceOnScroll = debounce(() => {
@@ -221,7 +221,7 @@ export class ConversationComponent extends Component {
                     />
                 );
             } else if (message.metadata && message.metadata.email_capture_thanks_trigger) {
-                return <div key='empty'/>;
+                return null;
             }
 
             return <MessageComponent key={ message._clientId || message._id }
@@ -231,7 +231,7 @@ export class ConversationComponent extends Component {
                                      onLoad={ this.scrollToBottom }
                                      {...message}
                                      lastInGroup={ lastInGroup } />;
-        });
+        }).filter((messageItem) => messageItem);  // remove null items
 
         if (typingIndicatorShown) {
             const refCallback = (c) => {

@@ -8,13 +8,13 @@ import classnames from 'classnames';
 class EmailCaptureComponent extends Component {
     static propTypes = {
         placeholder: PropTypes.string.isRequired,
-        userEmail: PropTypes.bool.isRequired,
+        userEmail: PropTypes.string,
         isChatOnline: PropTypes.bool.isRequired,
         dispatch: PropTypes.func.isRequired
     }
 
     _sendEmail = (event) => {
-        event.preventDefault()
+        event.preventDefault();
 
         const {dispatch} = this.props;
         dispatch(update({email: this.state.email}));
@@ -24,14 +24,19 @@ class EmailCaptureComponent extends Component {
                 email_capture_thanks_trigger: true
             }
         }));
-        this.setState({isCompleted: true});
     }
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             isCompleted: !!this.props.userEmail
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.props.userEmail && nextProps.userEmail) {
+            this.setState({isCompleted: true});
+        }
     }
 
     render() {
@@ -42,7 +47,7 @@ class EmailCaptureComponent extends Component {
             userEmail
         } = this.props;
 
-        const {isCompleted} = this.state
+        const {isCompleted} = this.state;
 
         return (
             <div className='gorgias-email-capture-wrapper'>
