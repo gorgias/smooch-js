@@ -52,25 +52,22 @@ class EmailCaptureComponent extends Component {
         return (
             <div className='gorgias-email-capture-wrapper'>
                 <div className='gorgias-email-capture-label'>
-                    {
-                        isCompleted ? (
-                            <div className='completed'>
-                                <div className='icon-circle'>
-                                    <i className='fa fa-check'/>
-                                </div>
-                                {
-                                    isChatOnline
-                                        ? onlineThanksText.replace('{email}', userEmail)
-                                        : offlineThanksText.replace('{email}', userEmail)}
-                            </div>
-                        ) : (
-                            isChatOnline ? onlineTriggerText : offlineTriggerText
-                        )
-                    }
+                    <div className={classnames('completed', {
+                        'displayed': isCompleted
+                    })}>
+                        <div className='icon-circle'>
+                            <i className='fa fa-check'/>
+                        </div>
+                        {
+                            isChatOnline
+                                ? onlineThanksText.replace('{email}', userEmail)
+                                : offlineThanksText.replace('{email}', userEmail)}
+                    </div>
+                    {!isCompleted && (isChatOnline ? onlineTriggerText : offlineTriggerText)}
                 </div>
                 <form
                     className={classnames('gorgias-email-capture-form', {
-                        'hidden': isCompleted
+                        'displayed': !isCompleted
                     })}
                     onSubmit={this._sendEmail}
                 >
