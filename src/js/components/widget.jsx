@@ -3,7 +3,6 @@ import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import isMobile from 'ismobilejs';
-import debounce from 'lodash.debounce';
 
 import { MessengerButton } from './messenger-button';
 import { Header } from './header';
@@ -108,7 +107,12 @@ export class WidgetComponent extends Component {
         let messengerButton;
 
         if (displayStyle === DISPLAY_STYLE.BUTTON && !appState.embedded) {
-            messengerButton = <MessengerButton shown={ appState.widgetState !== WIDGET_STATE.OPENED } />;
+            messengerButton = (
+                <MessengerButton
+                    shown={true}
+                    isWidgetOpen={appState.widgetState === WIDGET_STATE.OPENED}
+                />
+            );
         }
 
         return <div>

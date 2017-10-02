@@ -1,13 +1,13 @@
 @background-color: #fff;
 
-@widget-height-lg: 640px;
-@widget-height-md: 480px;
-@widget-height-sm: 420px;
+@widget-height-lg: 610px;
+@widget-height-md: 450px;
+@widget-height-sm: 390px;
 @widget-height-xs: 100%;
 
-@widget-width-lg: 410px;
-@widget-width-md: 350px;
-@widget-width-sm: 330px;
+@widget-width-lg: 385px;
+@widget-width-md: 330px;
+@widget-width-sm: 310px;
 @widget-width-xs: 100%;
 
 @content-width-lg: calc(~"@{widget-width-lg} - @{widget-padding} * 2");
@@ -20,12 +20,13 @@
 
 @main-region-height-mobile: ~"calc(100% - @{footer-height} - @{header-height} - 2* @{header-vertical-padding})";
 
-@header-height: 32px;
-@header-vertical-padding: 6px;
+@header-height: 100px;
+@header-vertical-padding: 2px;
+@header-vertical-border: 1px;
 @header-horizontal-padding: 18px;
-@footer-height: 45px;
+@footer-height: 56px;
 
-@header-extra-height: (@header-height + 2 * @header-vertical-padding);
+@header-extra-height: (@header-height + @header-vertical-border);
 @widget-close-bottom-md: -@widget-height-md + @header-extra-height;
 @widget-close-bottom-lg: -@widget-height-lg + @header-extra-height;
 @widget-close-bottom-sm: -@widget-height-sm + @header-extra-height;
@@ -45,7 +46,7 @@
 @sk-blue: #00aeff;
 @sk-light-grey: #f4f4f4;
 @sk-grey: #eee;
-@sk-medium-grey: #b2b2b2;
+@sk-medium-grey: rgba(44,66,103,0.46);
 @sk-dark-grey: #808080;
 @sk-darker-grey: #424242;
 
@@ -55,13 +56,13 @@
 @settings-header-color: #464646;
 @settings-channel-item-border-color: #EFEFEF;
 
-@font-size-base: 14px;
+@font-size-base: 15px;
 
 @messenger-button-size: 58px;
 
-@widget-vertical-spacing: 20px;
+@widget-vertical-spacing: 50px;
 @widget-horizontal-spacing: 20px;
-@widget-messenger-button-vertical-spacing: 40px;
+@widget-messenger-button-vertical-spacing: 30px;
 
 // Original values were the following :
 // @screen-lg-ht-min: 835px;

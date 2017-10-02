@@ -2,13 +2,16 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import bindAll from 'lodash.bindall';
 
-import { openWidget } from '../services/app';
+import { toggleWidget } from '../services/app';
 import { DefaultButtonIcon } from './default-button-icon';
+import { DefaultCloseIcon } from './default-close-icon';
+import classnames from 'classnames';
 
 export class MessengerButtonComponent extends Component {
 
     static propTypes = {
         shown: PropTypes.bool.isRequired,
+        isWidgetOpen: PropTypes.bool.isRequired,
         unreadCount: PropTypes.number.isRequired,
         settings: PropTypes.object.isRequired
     };
@@ -26,26 +29,22 @@ export class MessengerButtonComponent extends Component {
     onClick(e) {
         const {dispatch} = this.props;
         e.preventDefault();
-        dispatch(openWidget());
+        dispatch(toggleWidget());
     }
 
     render() {
-        const {unreadCount, shown, settings} = this.props;
-        const {brandColor, isBrandColorDark, buttonIconUrl} = settings;
+        const {unreadCount, shown, isWidgetOpen, settings} = this.props;
+        const {buttonIconUrl} = settings;
 
-        const style = {
-            backgroundColor: `#${brandColor}`
-        };
-
-        let content;
+        let icon;
 
         if (buttonIconUrl) {
-            content = <div className='messenger-button-icon'>
+            icon = <div className='messenger-button-icon' style={{position: 'absolute'}}>
                           <img alt='Smooch Messenger Button'
                                src={ buttonIconUrl } />
                       </div>;
         } else {
-            content = <DefaultButtonIcon isBrandColorDark={ isBrandColorDark } />;
+            icon = <DefaultButtonIcon key='2' style={{position: 'absolute'}}/>;
         }
 
         let unreadBadge;
@@ -56,12 +55,24 @@ export class MessengerButtonComponent extends Component {
         }
 
         return <div id='sk-messenger-button'
-                    className={ `messenger-button-${shown ? 'shown' : 'hidden'}` }
-                    style={ style }
-                    onClick={ this.onClick }>
-                   { content }
-                   { unreadBadge }
-               </div>;
+                    className={`messenger-button-${shown ? 'shown' : 'hidden'}`}
+                    onClick={this.onClick}>
+
+            <div
+                key='1'
+                className={classnames('sk-messenger-icon sk-messenger-close-icon', {
+                    'sk-messenger-icon-hidden-up': !isWidgetOpen
+                })}
+                style={{position: 'absolute'}}
+            >
+                <DefaultCloseIcon key='2' style={{position: 'absolute'}}/>
+            </div>
+
+            <div className={classnames('sk-messenger-icon', {'sk-messenger-icon-hidden-down': isWidgetOpen})}>
+                {icon}
+            </div>
+            {unreadBadge}
+        </div>;
     }
 }
 

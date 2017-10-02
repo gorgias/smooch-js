@@ -3,20 +3,17 @@ import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
 import { findDOMNode } from 'react-dom';
 
-import { AlternateChannels } from './alternate-channels';
-import { DefaultAppIcon } from './default-app-icon';
-
 import { setIntroHeight } from '../actions/app-state-actions';
+import { DefaultButtonIcon } from './default-button-icon';
 
 import { createMarkup } from '../utils/html';
-import { getAppChannelDetails } from '../utils/app';
 
 export class IntroductionComponent extends Component {
     static propTypes = {
         dispatch: PropTypes.func.isRequired,
         appState: PropTypes.object.isRequired,
         app: PropTypes.object.isRequired,
-        introAppText: PropTypes.string.isRequired,
+        headerText: PropTypes.string.isRequired,
         introductionText: PropTypes.string.isRequired
     };
 
@@ -53,27 +50,37 @@ export class IntroductionComponent extends Component {
     }
 
     render() {
-        const {app, introductionText, introAppText} = this.props;
-        const channelDetailsList = getAppChannelDetails(app.integrations);
+        const {app, introductionText, headerText} = this.props;
 
-        const channelsAvailable = channelDetailsList.length > 0;
-        const introText = channelsAvailable ? `${introductionText} ${introAppText}` : introductionText;
-
-        return <div className='sk-intro-section'
-                    ref='introductionContainer'>
-                   { app.iconUrl ? <img className='app-icon'
-                                        alt='App icon'
-                                        src={ app.iconUrl } />
-                         : <DefaultAppIcon /> }
-                   <div className='app-name'>
-                       { app.name }
-                   </div>
-                   <div className='intro-text'
-                        dangerouslySetInnerHTML={ createMarkup(introText) } />
-                   { channelsAvailable ?
-                         <AlternateChannels items={ channelDetailsList } /> :
-                         null }
-               </div>;
+        return (
+            <div
+                className='sk-intro-section'
+                ref='introductionContainer'
+            >
+                {
+                    app.iconUrl ? (
+                        <img
+                            className='app-icon'
+                            alt='App icon'
+                            src={app.iconUrl}
+                        />
+                    ) : (
+                        <div className='app-icon'>
+                            <DefaultButtonIcon />
+                        </div>
+                    )
+                }
+                <div className='text-column'>
+                    <div className='app-name'>
+                        {headerText}
+                    </div>
+                    <div
+                        className='intro-text'
+                        dangerouslySetInnerHTML={createMarkup(introductionText)}
+                    />
+                </div>
+            </div>
+        );
     }
 }
 
@@ -84,7 +91,7 @@ export const Introduction = connect(({app, appState: {introHeight, widgetState},
             introHeight,
             widgetState
         },
-        introAppText: text.introAppText,
+        headerText: text.headerText,
         introductionText: text.introductionText
     };
 })(IntroductionComponent);

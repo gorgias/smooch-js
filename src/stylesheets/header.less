@@ -1,17 +1,7 @@
 .header() {
-    z-index: 10;
-    height: @header-height;
-    line-height: @header-height;
-    padding: @header-vertical-padding @header-horizontal-padding;
-    position: relative;
-    background-color: @sk-light-grey;
-    cursor: pointer;
-    border-radius: 8px 8px 0 0;
-    font-size: 16px;
-    font-weight: 400;
-    box-sizing: content-box;
-    border-bottom: 1px solid @sk-grey;
-    color: @header-default-text-color;
+    box-shadow: 0 2px 23px 0px rgba(57, 57, 57, 0.26);
+    position: relative; // necessary for correct display of the box-shadow
+    z-index: 2;
 
     @media (max-width: @screen-sm-min) {
         border-radius: 0;
@@ -24,10 +14,15 @@
     }
 
     .sk-close-handle {
+        display: none;
         cursor: pointer;
         position: absolute;
         top: @header-vertical-padding;
-        right: 10px;
+        right: 12px;
+
+        .fa {
+           font-size: 17px;
+        }
     }
 
     .sk-back-handle {
@@ -35,10 +30,6 @@
         display: inline-block;
         margin-right: 8px;
         height: 30px;
-    }
-
-    .sk-close-handle .fa {
-        font-size: 17px;
     }
 
     .settings-content {
@@ -89,6 +80,64 @@
     #sk-header, #sk-settings-header {
         &, .fa {
             color: #fff;
+        }
+    }
+}
+
+.sk-intro-section {
+    background-color: #3f6ad3;
+    padding: @intro-padding-bottom @intro-padding;
+    min-height: @intro-icon-size + @intro-padding + @intro-padding-bottom;
+
+    height: @header-height;
+
+    display: flex;
+    align-items: center;
+
+    .text-column {
+        text-align: left;
+        margin-left: 15px;
+
+        .app-name {
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .intro-text {
+            color: white;
+            font-size: 17px;
+            line-height: 1.4;
+            margin-top: 2px;
+        }
+    }
+
+    .app-icon {
+        min-width: @intro-icon-size;
+        width: @intro-icon-size;
+        min-height: @intro-icon-size;
+        height: @intro-icon-size;
+        border-radius: 50%;
+
+        .default-icon {
+            width: @intro-icon-size - 10px;
+            height: @intro-icon-size - 10px;
+            margin-top: 5px;
+        }
+    }
+
+    .available-channels {
+        margin-top: 22px;
+        text-align: center;
+        color: @sk-base-text-color;
+
+        .channel-icon {
+            cursor: pointer;
+            margin-right: 13px;
+
+            &:last-child {
+               margin-right: 0;
+            }
         }
     }
 }

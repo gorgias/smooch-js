@@ -47,9 +47,9 @@ class Message extends Component {
             const messageProperties = getElementProperties(messageElement);
             const bubbleProperties = getElementProperties(bubble);
             const multiLineCheck = parseInt(bubbleProperties.fontSize) * 2;
-            if (messageProperties.height > multiLineCheck && messageProperties.width < bubbleProperties.width) {
-                bubble.style.width = (messageProperties.width + parseInt(bubbleProperties.paddingLeft) + parseInt(bubbleProperties.paddingRight)) + 'px';
-            }
+            // if (messageProperties.height > multiLineCheck && messageProperties.width < bubbleProperties.width) {
+            //     bubble.style.width = (messageProperties.width + parseInt(bubbleProperties.paddingLeft) + parseInt(bubbleProperties.paddingRight)) + 'px';
+            // }
         }
     }
 
@@ -78,7 +78,7 @@ class Message extends Component {
         } else if (hasText || hasFile) {
             lastItem = 'text';
         } else if (hasLocation) {
-            lastItem = 'location'
+            lastItem = 'location';
         }
 
         const avatarClass = hasImage ? ['sk-msg-avatar', 'sk-msg-avatar-img'] : ['sk-msg-avatar'];
@@ -193,25 +193,27 @@ class Message extends Component {
                   </div> ;
         }
 
-        return <div className={ rowClass.join(' ') }>
-                   { !isAppUser && firstInGroup ? fromName : null }
-                   { lastInGroup ? avatar : avatarPlaceHolder }
-                   <div className='sk-msg-wrapper'>
-                       <div className={ containerClasses.join(' ') }
-                            style={ style }
-                            ref='messageContent'
-                            onClick={ this.onMessageClick.bind(this) }>
-                           { imagePart ? imagePart : null }
-                           { textPart ? textPart : null }
-                           { locationPart ? locationPart : null }
-                           { hasActions ? <div className={ actionListClasses.join(' ') }>
-                                              { actionList }
-                                          </div> : null }
-                       </div>
-                       { sendStatus === SEND_STATUS.FAILED ? clickToRetry : null }
-                   </div>
-                   <div className='sk-clear'></div>
-               </div>;
+        return (
+            <div className={rowClass.join(' ')}>
+                {firstInGroup ? avatar : avatarPlaceHolder}
+                <div className='sk-msg-wrapper'>
+                    {!isAppUser && firstInGroup ? fromName : null}
+                    <div className={containerClasses.join(' ')}
+                         style={style}
+                         ref='messageContent'
+                         onClick={this.onMessageClick.bind(this)}>
+                        {imagePart ? imagePart : null}
+                        {textPart ? textPart : null}
+                        {locationPart ? locationPart : null}
+                        {hasActions ? <div className={actionListClasses.join(' ')}>
+                            {actionList}
+                        </div> : null}
+                    </div>
+                    {sendStatus === SEND_STATUS.FAILED ? clickToRetry : null}
+                </div>
+                <div className='sk-clear'/>
+            </div>
+        );
     }
 }
 

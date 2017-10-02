@@ -2,13 +2,15 @@
 @import "mixins.less";
 @import "bootstrap/variables.less";
 @import "variables.less";
+@import "../assets/fonts/maisonneue/stylesheet";
+
 .container() {
     @import "loading.less";
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'maisonneue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: 400;
     font-size: 13px;
     line-height: 1.4;
-    border-radius: 10px;
+    border-radius: 14px;
     color: #333;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -25,7 +27,6 @@
     label {
         box-sizing: border-box;
     }
-    @import "font-awesome.less";
     @import "forms.less";
     @import "buttons.less";
     @import "header.less";
@@ -69,9 +70,9 @@
     #sk-container {
         position: fixed;
         right: @widget-horizontal-spacing;
-        margin-bottom: -1px;
-        box-shadow: 0 0 24px rgba(0,0,0,0.15);
-        border: 1px solid rgba(0,0,0,0.15);
+        margin-bottom: @widget-vertical-spacing;
+        box-shadow: 0 36px 64px rgba(0,0,0,0.09);
+        //border: 1px solid rgba(0,0,0,0.15);
         z-index: 9998; // 1 less than Stripe Checkout
         overflow: hidden;
         .container();
@@ -114,6 +115,7 @@
             overflow-y: auto;
         }
     }
+    @import "font-awesome.less";
 }
 #sk-container.sk-embedded {
     @import "animations.less";
@@ -122,6 +124,8 @@
     height: 100%;
     width: 100%;
     position: absolute;
+    margin-bottom: 0;
+
     #sk-wrapper {
         background: @background-color;
         width: 100%;

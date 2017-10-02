@@ -56,7 +56,7 @@ module.exports = function(options) {
     const root = path.join(__dirname, 'src');
     const publicPath = options.devServer ?
         '/_assets/' :
-        'https://cdn.smooch.io/';
+        'https://gorgias-assets.gorgias.io/static/public/js/smooch/';
 
     const output = {
         path: options.outputPath || path.join(__dirname, 'dist'),
@@ -154,6 +154,10 @@ module.exports = function(options) {
         target: 'web',
         module: {
             loaders: loadersByExtension(loaders).concat(loadersByExtension(stylesheetLoaders)).concat(additionalLoaders)
+                .concat([
+                    { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
+                    { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader' }
+                ])
         },
         devtool: options.devtool,
         debug: options.debug,

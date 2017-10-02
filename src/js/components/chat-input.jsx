@@ -15,7 +15,6 @@ export class ChatInputComponent extends Component {
         accentColor: PropTypes.string,
         imageUploadEnabled: PropTypes.bool.isRequired,
         inputPlaceholderText: PropTypes.string.isRequired,
-        sendButtonText: PropTypes.string.isRequired,
         unreadCount: PropTypes.number.isRequired,
         dispatch: PropTypes.func.isRequired
     };
@@ -57,6 +56,12 @@ export class ChatInputComponent extends Component {
         this.checkAndResetUnreadCount(this.props.unreadCount);
     }
 
+    onKeyPress = (e) => {
+        if (e.nativeEvent.keyCode === 13 && !e.nativeEvent.shiftKey) {
+            this.onSendMessage(e);
+        }
+    }
+
     onSendMessage(e) {
         e.preventDefault();
         const {text} = this.state;
@@ -71,7 +76,7 @@ export class ChatInputComponent extends Component {
     }
 
     render() {
-        const {accentColor, imageUploadEnabled, inputPlaceholderText, sendButtonText} = this.props;
+        const {accentColor, imageUploadEnabled, inputPlaceholderText} = this.props;
 
         let sendButton;
 
@@ -80,26 +85,30 @@ export class ChatInputComponent extends Component {
 
         if (this.state.text.trim()) {
             buttonClassNames.push('active');
-
-            if (accentColor) {
-                buttonStyle.color = `#${accentColor}`;
-            }
         }
 
         if (isMobile.apple.device) {
             // Safari on iOS needs a way to send on click, without triggering a mouse event.
             // onTouchStart will do the trick and the input won't lose focus.
-            sendButton = <span ref='button'
-                               className={ buttonClassNames.join(' ') }
-                               onTouchStart={ this.onSendMessage }
-                               style={ buttonStyle }>{ sendButtonText }</span>;
+            sendButton = (
+                <span ref='button'
+                      className={buttonClassNames.join(' ')}
+                      onTouchStart={this.onSendMessage}
+                      style={buttonStyle}>
+                    <i className='fa fa-paper-plane'/>
+                </span>
+            );
         } else {
-            sendButton = <a ref='button'
-                            className={ buttonClassNames.join(' ') }
-                            onClick={ this.onSendMessage }
-                            style={ buttonStyle }>
-                             { sendButtonText }
-                         </a>;
+            sendButton = (
+                <a
+                    ref='button'
+                    className={ buttonClassNames.join(' ') }
+                    onClick={ this.onSendMessage }
+                    style={ buttonStyle }
+                >
+                    <i className='fa fa-paper-plane'/>
+                </a>
+            );
         }
 
         const imageUploadButton = imageUploadEnabled ?
@@ -112,22 +121,32 @@ export class ChatInputComponent extends Component {
             inputContainerClasses.push('no-upload');
         }
 
-        return <div id='sk-footer'>
-                   { imageUploadButton }
-                   <form onSubmit={ this.onSendMessage }
-                         action='#'>
-                       <div className={ inputContainerClasses.join(' ') }>
-                           <input ref='input'
-                                  placeholder={ inputPlaceholderText }
-                                  className='input message-input'
-                                  onChange={ this.onChange }
-                                  onFocus={ this.onFocus }
-                                  value={ this.state.text }
-                                  title={ sendButtonText }></input>
-                       </div>
-                   </form>
-                   { sendButton }
-               </div>;
+        return (
+            <div id='sk-footer'>
+                <div className='input-wrapper'>
+                    <form onSubmit={this.onSendMessage}
+                          action='#'>
+                        <div className={inputContainerClasses.join(' ')}>
+                            <pre className='bg-input'>
+                                {this.state.text + '\n'}
+                            </pre>
+                            <textarea
+                                ref='input'
+                                placeholder={inputPlaceholderText}
+                                className='input message-input'
+                                onChange={this.onChange}
+                                onFocus={this.onFocus}
+                                onKeyPress={this.onKeyPress}
+                                value={this.state.text}
+                                rows='1'
+                            />
+                        </div>
+                    </form>
+                    {!this.state.text && imageUploadButton}
+                    {this.state.text && sendButton}
+                </div>
+            </div>
+        );
     }
 }
 
@@ -135,7 +154,6 @@ export const ChatInput = connect(({appState, app, ui, conversation: {unreadCount
     return {
         imageUploadEnabled: appState.imageUploadEnabled,
         accentColor: app.settings.web.accentColor,
-        sendButtonText: ui.text.sendButtonText,
         inputPlaceholderText: ui.text.inputPlaceholder,
         unreadCount
     };
