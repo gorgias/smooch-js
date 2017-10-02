@@ -70,9 +70,9 @@ class Message extends Component {
         const hasLocation = type === 'location';
         const isAppUser = role === 'appUser';
         const hasActions = actions.length > 0;
-        
+
         let lastItem;
-        
+
         if (hasActions) {
             lastItem = 'actions';        
         } else if (hasText || hasFile) {

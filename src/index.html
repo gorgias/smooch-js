@@ -11,14 +11,25 @@
 
         window.SmoochOptions = {
             serviceUrl: 'ROOT_URL',
-            appToken: '3gfl3lnyzzixe4i52mwsbqx88',
+            appToken: '0b5wpz7uf649jp9102k9b50kp',
             givenName: 'GIVEN_NAME',
             surname: 'SURNAME',
             email: 'EMAIL',
             jwt: 'JWT',
             userId: 'USER_ID',
             properties: PROPERTIES,
-            emailCaptureEnabled: true
+            emailCaptureEnabled: true,
+            displayAgents: [{
+                name: 'Martin',
+                avatar_url: 'https://www.gravatar.com/avatar/b1657871b623651e183bff8b8193398d?d=404&s=50'
+            }, {
+                name: 'Alex',
+                avatar_url: 'https://www.gravatar.com/avatar/b0603c6a6734698e0b93b1350c6c8286?d=404&s=50'
+            }, {
+                name: 'Louis',
+                avatar_url: 'https://www.gravatar.com/avatar/e8db62e75fdcd0d6eedf597dcf8035d3?d=404&s=50'
+            }],
+            isChatOnline: true
         };
 
         Smooch.on('message:received', function(message) {

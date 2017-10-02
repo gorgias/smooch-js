@@ -4,9 +4,9 @@ import debounce from 'lodash.debounce';
 import { findDOMNode } from 'react-dom';
 
 import { setIntroHeight } from '../actions/app-state-actions';
-import { DefaultButtonIcon } from './default-button-icon';
 
 import { createMarkup } from '../utils/html';
+import classnames from 'classnames';
 
 export class IntroductionComponent extends Component {
     static propTypes = {
@@ -50,33 +50,41 @@ export class IntroductionComponent extends Component {
     }
 
     render() {
-        const {app, introductionText, headerText} = this.props;
+        const {appState: {displayAgents, isChatOnline}, introductionText, headerText, offlineIntroductionText} = this.props;
 
         return (
             <div
-                className='sk-intro-section'
+                className={classnames('sk-intro-section', {'online': isChatOnline, 'offline': !isChatOnline})}
                 ref='introductionContainer'
             >
-                {
-                    app.iconUrl ? (
-                        <img
-                            className='app-icon'
-                            alt='App icon'
-                            src={app.iconUrl}
-                        />
-                    ) : (
-                        <div className='app-icon'>
-                            <DefaultButtonIcon />
-                        </div>
-                    )
-                }
+                <div className={classnames('agent-avatars-wrapper', {offline: !isChatOnline})}>
+                    {
+                        displayAgents.map((agent, idx) => {
+                            const first = idx === 0;
+                            const last = idx === displayAgents.length - 1;
+                            const middle = (!first && !last) || (idx === 1);
+
+                            return (
+                                <div
+                                    key={idx}
+                                    className={classnames('agent-avatar', {first, middle, last})}
+                                >
+                                    <img src={agent.avatar_url} />
+                                    {
+                                        isChatOnline && <div className='online-marker'/>
+                                    }
+                                </div>
+                            );
+                        })
+                    }
+                </div>
                 <div className='text-column'>
                     <div className='app-name'>
                         {headerText}
                     </div>
                     <div
                         className='intro-text'
-                        dangerouslySetInnerHTML={createMarkup(introductionText)}
+                        dangerouslySetInnerHTML={createMarkup(isChatOnline ? introductionText : offlineIntroductionText)}
                     />
                 </div>
             </div>
@@ -84,14 +92,17 @@ export class IntroductionComponent extends Component {
     }
 }
 
-export const Introduction = connect(({app, appState: {introHeight, widgetState}, ui: {text}}) => {
+export const Introduction = connect(({app, appState: {introHeight, widgetState, displayAgents, isChatOnline}, ui: {text}}) => {
     return {
         app,
         appState: {
+            displayAgents,
+            isChatOnline,
             introHeight,
             widgetState
         },
         headerText: text.headerText,
-        introductionText: text.introductionText
+        introductionText: text.introductionText,
+        offlineIntroductionText: text.offlineIntroductionText
     };
 })(IntroductionComponent);
