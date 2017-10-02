@@ -62,10 +62,10 @@ const INITIAL_STATE = {
         // Gorgias variables
         offlineIntroductionText: 'We\'ll be back tomorrow',
         emailCapturePlaceholder: 'your@email.com',
-        emailCaptureOnlineTriggerText: '1',
-        emailCaptureOnlineThanksText: 'Thanks! We\'ll email you at {email} if you leave',
-        emailCaptureOfflineTriggerText: '3',
-        emailCaptureOfflineThanksText: 'Thanks {email}! We\'ll get back to you shortly.'
+        emailCaptureOnlineTriggerText: '',
+        emailCaptureOnlineThanksText: '',
+        emailCaptureOfflineTriggerText: '',
+        emailCaptureOfflineThanksText: ''
     }
 };
 
