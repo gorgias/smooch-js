@@ -220,7 +220,7 @@ export class ConversationComponent extends Component {
                         userEmail={userEmail}
                     />
                 );
-            } else if (message.metadata && message.metadata.email_capture_thanks_trigger) {
+            } else if (message.metadata && message.metadata.email_capture_answer) {
                 return null;
             }
 

@@ -21,7 +21,7 @@ class EmailCaptureComponent extends Component {
         dispatch(sendMessage({
             text: this.state.email,
             metadata: {
-                email_capture_thanks_trigger: true
+                email_capture_answer: true
             }
         }));
     }
