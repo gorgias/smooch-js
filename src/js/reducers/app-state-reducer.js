@@ -4,6 +4,7 @@ import { RESET_CONVERSATION, ADD_MESSAGE } from '../actions/conversation-actions
 import { WIDGET_STATE } from '../constants/app';
 import {SET_DISPLAY_AGENTS} from "../actions/app-state-actions";
 import {SET_CHAT_OFFLINE} from "../actions/app-state-actions";
+import {SET_CAMPAIGNS} from "../actions/app-state-actions";
 
 const INITIAL_STATE = {
     settingsVisible: false,
@@ -29,7 +30,8 @@ const INITIAL_STATE = {
 
     // Gorgias variables
     displayAgents: [],
-    isChatOnline: true
+    isChatOnline: true,
+    campaigns: []
 };
 
 export function AppStateReducer(state = INITIAL_STATE, action) {
@@ -242,6 +244,12 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 isChatOnline: false
+            };
+
+        case SET_CAMPAIGNS:
+            return {
+                ...state,
+                campaigns: action.campaigns
             };
 
         default:

@@ -177,6 +177,11 @@ export class Smooch {
             actions.push(AppStateActions.setChatOffline());
         }
 
+        // Campaigns
+        if (props.campaigns) {
+            actions.push(AppStateActions.setCampaigns(props.campaigns));
+        }
+
         store.dispatch(batchActions(actions));
 
         unsubscribeFromStore = observeStore(store, ({conversation}) => conversation, onStoreChange);

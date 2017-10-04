@@ -27,8 +27,12 @@ export const SET_FETCHING_MORE_MESSAGES = 'SET_FETCHING_MORE_MESSAGES';
 export const SET_SHOULD_SCROLL_TO_BOTTOM = 'SET_SHOULD_SCROLL_TO_BOTTOM';
 export const SHOW_TYPING_INDICATOR = 'SHOW_TYPING_INDICATOR';
 export const HIDE_TYPING_INDICATOR = 'HIDE_TYPING_INDICATOR';
+
+// Gorgias constants
 export const SET_DISPLAY_AGENTS = 'SET_DISPLAY_AGENTS';
 export const SET_CHAT_OFFLINE = 'SET_CHAT_OFFLINE';
+export const SET_CAMPAIGNS = 'SET_CAMPAIGNS';
+
 
 export function toggleWidget() {
     return {
@@ -209,6 +213,8 @@ export function hideTypingIndicator() {
     };
 }
 
+// Gorgias actions
+
 export function setDisplayAgents(displayAgents) {
     return {
         type: SET_DISPLAY_AGENTS,
@@ -219,5 +225,12 @@ export function setDisplayAgents(displayAgents) {
 export function setChatOffline() {
     return {
         type: SET_CHAT_OFFLINE
+    };
+}
+
+export function setCampaigns(campaigns) {
+    return {
+        type: SET_CAMPAIGNS,
+        campaigns
     };
 }
