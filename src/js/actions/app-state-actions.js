@@ -32,6 +32,8 @@ export const HIDE_TYPING_INDICATOR = 'HIDE_TYPING_INDICATOR';
 export const SET_DISPLAY_AGENTS = 'SET_DISPLAY_AGENTS';
 export const SET_CHAT_OFFLINE = 'SET_CHAT_OFFLINE';
 export const SET_CAMPAIGNS = 'SET_CAMPAIGNS';
+export const INCREMENT_TIME_SPENT_ON_PAGE = 'INCREMENT_TIME_SPENT_ON_PAGE';
+export const TIME_SPENT_ON_PAGE_OFFSET = 60;
 
 
 export function toggleWidget() {
@@ -232,5 +234,12 @@ export function setCampaigns(campaigns) {
     return {
         type: SET_CAMPAIGNS,
         campaigns
+    };
+}
+
+export function incrementTimeSpentOnPage(seconds) {
+    return {
+        type: INCREMENT_TIME_SPENT_ON_PAGE,
+        seconds
     };
 }

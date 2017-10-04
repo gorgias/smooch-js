@@ -34,6 +34,7 @@ import { VERSION } from './constants/version';
 import { WIDGET_STATE } from './constants/app';
 
 import { Root } from './root';
+import {TIME_SPENT_ON_PAGE_OFFSET} from './actions/app-state-actions';
 
 
 function renderWidget(container) {
@@ -108,9 +109,12 @@ function onStoreChange({messages, unreadCount}) {
     }
 }
 
-export class Smooch {
-    VERSION = VERSION
+function incrementTimeSpentOnPage(actions, seconds) {
+    actions.push(AppStateActions.incrementTimeSpentOnPage(seconds));
+    setTimeout(incrementTimeSpentOnPage(actions, seconds), seconds * 1000);
+}
 
+export class Smooch {
     on() {
         return observable.on(...arguments);
     }
@@ -180,6 +184,12 @@ export class Smooch {
         // Campaigns
         if (props.campaigns) {
             actions.push(AppStateActions.setCampaigns(props.campaigns));
+
+            // If there's campaigns, we need to count the time spent on the page by the user
+            // in order of handling the timeSpentOnPage trigger
+            setTimeout(() => {
+                incrementTimeSpentOnPage(actions, TIME_SPENT_ON_PAGE_OFFSET);
+            }, TIME_SPENT_ON_PAGE_OFFSET * 1000);
         }
 
         store.dispatch(batchActions(actions));

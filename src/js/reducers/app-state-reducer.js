@@ -2,9 +2,10 @@ import * as AppStateActions from '../actions/app-state-actions';
 import { RESET } from '../actions/common-actions';
 import { RESET_CONVERSATION, ADD_MESSAGE } from '../actions/conversation-actions';
 import { WIDGET_STATE } from '../constants/app';
-import {SET_DISPLAY_AGENTS} from "../actions/app-state-actions";
-import {SET_CHAT_OFFLINE} from "../actions/app-state-actions";
-import {SET_CAMPAIGNS} from "../actions/app-state-actions";
+import {SET_DISPLAY_AGENTS} from '../actions/app-state-actions';
+import {SET_CHAT_OFFLINE} from '../actions/app-state-actions';
+import {SET_CAMPAIGNS} from '../actions/app-state-actions';
+import {INCREMENT_TIME_SPENT_ON_PAGE} from '../actions/app-state-actions';
 
 const INITIAL_STATE = {
     settingsVisible: false,
@@ -31,7 +32,9 @@ const INITIAL_STATE = {
     // Gorgias variables
     displayAgents: [],
     isChatOnline: true,
-    campaigns: []
+    campaigns: [],
+    displayedCampaigns: [],
+    timeSpentOnPage: 0
 };
 
 export function AppStateReducer(state = INITIAL_STATE, action) {
@@ -250,6 +253,12 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 campaigns: action.campaigns
+            };
+
+        case INCREMENT_TIME_SPENT_ON_PAGE:
+            return {
+                ...state,
+                timeSpentOnPage: state.timeSpentOnPage + action.seconds
             };
 
         default:
