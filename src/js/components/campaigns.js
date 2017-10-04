@@ -25,20 +25,33 @@ export class CampaignListComponent extends React.Component {
                 <ReactCSSTransitionGroup
                     transitionName='transition-wrapper'
                     transitionAppear={true}
-                    transitionAppearTimeout={1000}
-                    transitionEnterTimeout={1000}
-                    transitionLeaveTimeout={1000}
+                    transitionAppearTimeout={800}
+                    transitionEnterTimeout={200}
+                    transitionLeaveTimeout={200}
                 >
                 {
                     campaigns.map((campaign) => {
+                        const avatar_url = campaign.message.author ? campaign.message.author.avatar_url : ''
+
+                        const author_name = campaign.message.author ? campaign.message.author.name : ''
+
                         return (
                             <div
                                 key={campaign.slug}
                                 className='campaign'
                             >
-                                <div className='message'>
-                                    {campaign.message.text}
+                                <div className='message-area'>
+                                    <div className='avatar'>
+                                        <img src={avatar_url}/>
+                                    </div>
+                                    <div className='message'>
+                                        <div className='author-name'>
+                                            {author_name}
+                                        </div>
+                                        {campaign.message.text}
+                                    </div>
                                 </div>
+
                                 <div
                                     className='reply-area'
                                     onClick={() => this._replyToCampaign()}
