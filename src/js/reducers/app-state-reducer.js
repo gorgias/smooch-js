@@ -265,6 +265,10 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
             };
 
         case DISPLAY_CAMPAIGN: {
+            if (state.displayedCampaigns.find((c) => c.slug === action.campaign.slug)) {
+                return state;
+            }
+
             const newDisplayedCampaigns = [].concat(state.displayedCampaigns);
             newDisplayedCampaigns.push(action.campaign);
 
