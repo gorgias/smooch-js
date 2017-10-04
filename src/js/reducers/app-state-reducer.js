@@ -6,6 +6,7 @@ import {SET_DISPLAY_AGENTS} from '../actions/app-state-actions';
 import {SET_CHAT_OFFLINE} from '../actions/app-state-actions';
 import {SET_CAMPAIGNS} from '../actions/app-state-actions';
 import {INCREMENT_TIME_SPENT_ON_PAGE} from '../actions/app-state-actions';
+import {DISPLAY_CAMPAIGN} from "../actions/app-state-actions";
 
 const INITIAL_STATE = {
     settingsVisible: false,
@@ -260,6 +261,12 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
                 ...state,
                 timeSpentOnPage: state.timeSpentOnPage + action.seconds
             };
+
+        case DISPLAY_CAMPAIGN:
+            return {
+                ...state,
+                displayedCampaigns: Object.assign([], state.displayedCampaigns, [action.campaign])
+            }
 
         default:
             return state;

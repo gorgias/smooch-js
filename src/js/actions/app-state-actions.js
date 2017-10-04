@@ -1,3 +1,5 @@
+import {shouldDisplayCampaign} from "../utils/campaigns";
+
 export const TOGGLE_WIDGET = 'TOGGLE_WIDGET';
 export const OPEN_WIDGET = 'OPEN_WIDGET';
 export const CLOSE_WIDGET = 'CLOSE_WIDGET';
@@ -34,6 +36,7 @@ export const SET_CHAT_OFFLINE = 'SET_CHAT_OFFLINE';
 export const SET_CAMPAIGNS = 'SET_CAMPAIGNS';
 export const INCREMENT_TIME_SPENT_ON_PAGE = 'INCREMENT_TIME_SPENT_ON_PAGE';
 export const TIME_SPENT_ON_PAGE_OFFSET = 60;
+export const DISPLAY_CAMPAIGN = 'DISPLAY_CAMPAIGN';
 
 
 export function toggleWidget() {
@@ -241,5 +244,30 @@ export function incrementTimeSpentOnPage(seconds) {
     return {
         type: INCREMENT_TIME_SPENT_ON_PAGE,
         seconds
+    };
+}
+
+export function displayCampaign(campaign) {
+    return {
+        type: DISPLAY_CAMPAIGN,
+        campaign
+    };
+}
+
+export function computeDisplayedCampaigns() {
+    return (dispatch, getState) => {
+        const state = getState();
+        const campaigns = state.appState.campaigns;
+
+        const context = {
+            timeSpentOnPage: state.appState.timeSpentOnPage,
+            currentUrl: window.location.href.replace('http://', '').replace('https://', '')
+        };
+
+        campaigns.forEach((campaign) => {
+            if (shouldDisplayCampaign(campaign, context)) {
+                dispatch(displayCampaign(campaign));
+            }
+        });
     };
 }

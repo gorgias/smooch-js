@@ -109,9 +109,10 @@ function onStoreChange({messages, unreadCount}) {
     }
 }
 
-function incrementTimeSpentOnPage(actions, seconds) {
+function _incrementTimeSpentOnPage(actions, seconds) {
     actions.push(AppStateActions.incrementTimeSpentOnPage(seconds));
-    setTimeout(incrementTimeSpentOnPage(actions, seconds), seconds * 1000);
+    actions.push(AppStateActions.computeDisplayedCampaigns())
+    setTimeout(() => _incrementTimeSpentOnPage(actions, seconds), seconds * 1000);
 }
 
 export class Smooch {
@@ -184,15 +185,20 @@ export class Smooch {
         // Campaigns
         if (props.campaigns) {
             actions.push(AppStateActions.setCampaigns(props.campaigns));
+        }
+
+        store.dispatch(batchActions(actions));
+
+        // This chunk needs to be executed AFTER the batchActions above
+        if (props.campaigns) {
+            store.dispatch(AppStateActions.computeDisplayedCampaigns())
 
             // If there's campaigns, we need to count the time spent on the page by the user
             // in order of handling the timeSpentOnPage trigger
             setTimeout(() => {
-                incrementTimeSpentOnPage(actions, TIME_SPENT_ON_PAGE_OFFSET);
+                _incrementTimeSpentOnPage(actions, TIME_SPENT_ON_PAGE_OFFSET);
             }, TIME_SPENT_ON_PAGE_OFFSET * 1000);
         }
-
-        store.dispatch(batchActions(actions));
 
         unsubscribeFromStore = observeStore(store, ({conversation}) => conversation, onStoreChange);
 

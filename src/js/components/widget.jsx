@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import isMobile from 'ismobilejs';
 
+import { CampaignList } from './campaigns';
 import { MessengerButton } from './messenger-button';
 import { Header } from './header';
 import { Conversation } from './conversation';
@@ -147,6 +148,7 @@ export class WidgetComponent extends Component {
                        </div>
                    </div>
                    { messengerButton }
+                   <CampaignList/>
                </div>;
     }
 }
