@@ -112,48 +112,53 @@ export class WidgetComponent extends Component {
                 <MessengerButton
                     shown={true}
                     isWidgetOpen={appState.widgetState === WIDGET_STATE.OPENED}
+                    areCampaignsDisplayed={!!appState.campaigns.length}
                 />
             );
         }
 
-        return <div>
-                   <div id='sk-container'
-                        className={ classNames.join(' ') }
-                        onTouchStart={ this.onTouchStart }
-                        onClick={ this.onClick }>
-                       <MessageIndicator />
-                       <div id='sk-wrapper'
-                            className={ wrapperClassNames.join(' ') }>
-                           <Header />
-                           <ReactCSSTransitionGroup component='div'
-                                                    className='sk-notification-container'
-                                                    transitionName='sk-notification'
-                                                    transitionAppear={ true }
-                                                    transitionAppearTimeout={ 500 }
-                                                    transitionEnterTimeout={ 500 }
-                                                    transitionLeaveTimeout={ 500 }>
-                               { notification }
-                           </ReactCSSTransitionGroup>
-                           <ReactCSSTransitionGroup component='div'
-                                                    transitionName='settings'
-                                                    transitionAppear={ true }
-                                                    transitionAppearTimeout={ 250 }
-                                                    transitionEnterTimeout={ 250 }
-                                                    transitionLeaveTimeout={ 250 }>
-                               { settingsComponent }
-                           </ReactCSSTransitionGroup>
-                           { channelsComponent }
-                           <Conversation />
-                           { footer }
-                       </div>
-                   </div>
-                   { messengerButton }
-                   <CampaignList/>
-               </div>;
+        return (
+            <div>
+                <div id='sk-container'
+                     className={classNames.join(' ')}
+                     onTouchStart={this.onTouchStart}
+                     onClick={this.onClick}>
+                    <MessageIndicator/>
+                    <div id='sk-wrapper'
+                         className={wrapperClassNames.join(' ')}>
+                        <Header/>
+                        <ReactCSSTransitionGroup component='div'
+                                                 className='sk-notification-container'
+                                                 transitionName='sk-notification'
+                                                 transitionAppear={true}
+                                                 transitionAppearTimeout={500}
+                                                 transitionEnterTimeout={500}
+                                                 transitionLeaveTimeout={500}>
+                            {notification}
+                        </ReactCSSTransitionGroup>
+                        <ReactCSSTransitionGroup component='div'
+                                                 transitionName='settings'
+                                                 transitionAppear={true}
+                                                 transitionAppearTimeout={250}
+                                                 transitionEnterTimeout={250}
+                                                 transitionLeaveTimeout={250}>
+                            {settingsComponent}
+                        </ReactCSSTransitionGroup>
+                        {channelsComponent}
+                        <Conversation/>
+                        {footer}
+                    </div>
+                </div>
+                {messengerButton}
+                <CampaignList
+                    campaigns={appState.campaigns}
+                />
+            </div>
+        );
     }
 }
 
-export const Widget = connect(({appState: {settingsVisible, widgetState, errorNotificationMessage, embedded, showAnimation}, app, ui, user}) => {
+export const Widget = connect(({appState: {displayedCampaigns, settingsVisible, widgetState, errorNotificationMessage, embedded, showAnimation}, app, ui, user}) => {
     // only extract what is needed from appState as this is something that might
     // mutate a lot
     return {
@@ -162,7 +167,8 @@ export const Widget = connect(({appState: {settingsVisible, widgetState, errorNo
             widgetState,
             errorNotificationMessage,
             embedded,
-            showAnimation
+            showAnimation,
+            campaigns: displayedCampaigns
         },
         app,
         settings: app.settings.web,

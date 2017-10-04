@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
 
-export class CampaignListComponent extends React.Component {
+export class CampaignList extends React.Component {
     static propTypes = {
         campaigns: PropTypes.array.isRequired
     }
@@ -12,12 +11,20 @@ export class CampaignListComponent extends React.Component {
         console.log(campaigns);
 
         return (
-            <div className="campaigns">
+            <div className='campaigns'>
                 {
                     campaigns.map((campaign) => {
                         return (
-                            <div key={campaign.slug} className="campaign">
-                                {campaign.name}
+                            <div
+                                key={campaign.slug}
+                                className='campaign'
+                            >
+                                <div className='message'>
+                                    {campaign.message.text}
+                                </div>
+                                <div className='reply-area'>
+                                    Click to reply
+                                </div>
                             </div>
                         );
                     })
@@ -26,9 +33,3 @@ export class CampaignListComponent extends React.Component {
         );
     }
 }
-
-export const CampaignList = connect(({appState: {displayedCampaigns}}) => {
-    return {
-        campaigns: displayedCampaigns
-    };
-})(CampaignListComponent);

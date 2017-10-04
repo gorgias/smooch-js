@@ -4,7 +4,23 @@
   bottom: 50px;
   margin-bottom: 50px;
 
-  .campaign {
+  .widget-size();
 
+  height: auto !important;
+
+  .campaign {
+    background: white;
+    box-shadow: 0 10px 64px rgba(0, 0, 0, 0.09);
+    border-radius: 10px;
+
+    .message {
+      padding: 20px;
+    }
+
+    .reply-area {
+      padding: 20px;
+      border-top: 1px solid @gorgias-light-grey;
+      color: @sk-medium-grey;
+    }
   }
 }

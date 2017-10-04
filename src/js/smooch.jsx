@@ -109,10 +109,10 @@ function onStoreChange({messages, unreadCount}) {
     }
 }
 
-function _incrementTimeSpentOnPage(actions, seconds) {
-    actions.push(AppStateActions.incrementTimeSpentOnPage(seconds));
-    actions.push(AppStateActions.computeDisplayedCampaigns())
-    setTimeout(() => _incrementTimeSpentOnPage(actions, seconds), seconds * 1000);
+function _incrementTimeSpentOnPage(store, seconds) {
+    store.dispatch(AppStateActions.incrementTimeSpentOnPage(seconds));
+    store.dispatch(AppStateActions.computeDisplayedCampaigns());
+    setTimeout(() => _incrementTimeSpentOnPage(store, seconds), seconds * 1000);
 }
 
 export class Smooch {
@@ -191,12 +191,12 @@ export class Smooch {
 
         // This chunk needs to be executed AFTER the batchActions above
         if (props.campaigns) {
-            store.dispatch(AppStateActions.computeDisplayedCampaigns())
+            store.dispatch(AppStateActions.computeDisplayedCampaigns());
 
             // If there's campaigns, we need to count the time spent on the page by the user
             // in order of handling the timeSpentOnPage trigger
             setTimeout(() => {
-                _incrementTimeSpentOnPage(actions, TIME_SPENT_ON_PAGE_OFFSET);
+                _incrementTimeSpentOnPage(store, TIME_SPENT_ON_PAGE_OFFSET);
             }, TIME_SPENT_ON_PAGE_OFFSET * 1000);
         }
 

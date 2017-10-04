@@ -12,6 +12,7 @@ export class MessengerButtonComponent extends Component {
     static propTypes = {
         shown: PropTypes.bool.isRequired,
         isWidgetOpen: PropTypes.bool.isRequired,
+        areCampaignsDisplayed: PropTypes.bool.isRequired,
         unreadCount: PropTypes.number.isRequired,
         settings: PropTypes.object.isRequired
     };
@@ -33,7 +34,7 @@ export class MessengerButtonComponent extends Component {
     }
 
     render() {
-        const {unreadCount, shown, isWidgetOpen, settings} = this.props;
+        const {unreadCount, shown, isWidgetOpen, areCampaignsDisplayed, settings} = this.props;
         const {buttonIconUrl} = settings;
 
         let icon;
@@ -61,14 +62,16 @@ export class MessengerButtonComponent extends Component {
             <div
                 key='1'
                 className={classnames('sk-messenger-icon sk-messenger-close-icon', {
-                    'sk-messenger-icon-hidden-up': !isWidgetOpen
+                    'sk-messenger-icon-hidden-up': !isWidgetOpen && !areCampaignsDisplayed
                 })}
                 style={{position: 'absolute'}}
             >
                 <DefaultCloseIcon key='2' style={{position: 'absolute'}}/>
             </div>
 
-            <div className={classnames('sk-messenger-icon', {'sk-messenger-icon-hidden-down': isWidgetOpen})}>
+            <div className={classnames('sk-messenger-icon', {
+                'sk-messenger-icon-hidden-down': isWidgetOpen || areCampaignsDisplayed
+            })}>
                 {icon}
             </div>
             {unreadBadge}
