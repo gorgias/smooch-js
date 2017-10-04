@@ -8,16 +8,47 @@
 
   height: auto !important;
 
+  .transition-wrapper-appear {
+    opacity: 0;
+    position: relative;
+    top: 10px;
+  }
+
+  .transition-wrapper-appear-active {
+    opacity: 1;
+    transition: opacity 0.5s 0.3s, top 0.5s 0.3s;
+    position: relative;
+    top: 0;
+  }
+
+  .transition-wrapper-enter,
+  .transition-wrapper-leave.transition-wrapper-leave-active {
+    opacity: 0;
+    transition: opacity 0.5s, top 0.5s;
+    position: relative;
+    top: 10px;
+  }
+
+  .transition-wrapper-enter.transition-wrapper-enter-active,
+  .transition-wrapper-leave {
+    opacity: 1;
+    transition: opacity 0.5s, top 0.5s;
+    position: relative;
+    top: 0;
+  }
+
   .campaign {
     background: white;
     box-shadow: 0 10px 64px rgba(0, 0, 0, 0.09);
     border-radius: 10px;
+    margin-top: 10px;
 
     .message {
       padding: 20px;
     }
 
     .reply-area {
+      cursor: pointer;
       padding: 20px;
       border-top: 1px solid @gorgias-light-grey;
       color: @sk-medium-grey;

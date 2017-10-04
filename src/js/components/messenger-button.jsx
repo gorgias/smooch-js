@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import bindAll from 'lodash.bindall';
 
 import { toggleWidget } from '../services/app';
+import { hideAllDisplayedCampaigns } from '../actions/app-state-actions';
 import { DefaultButtonIcon } from './default-button-icon';
 import { DefaultCloseIcon } from './default-close-icon';
 import classnames from 'classnames';
@@ -28,9 +29,14 @@ export class MessengerButtonComponent extends Component {
     }
 
     onClick(e) {
-        const {dispatch} = this.props;
+        const {dispatch, areCampaignsDisplayed} = this.props;
         e.preventDefault();
-        dispatch(toggleWidget());
+
+        if (areCampaignsDisplayed) {
+            dispatch(hideAllDisplayedCampaigns());
+        } else {
+            dispatch(toggleWidget());
+        }
     }
 
     render() {

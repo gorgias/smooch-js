@@ -150,9 +150,7 @@ export class WidgetComponent extends Component {
                     </div>
                 </div>
                 {messengerButton}
-                <CampaignList
-                    campaigns={appState.campaigns}
-                />
+                <CampaignList campaigns={appState.campaigns}/>
             </div>
         );
     }

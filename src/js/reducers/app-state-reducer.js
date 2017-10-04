@@ -7,6 +7,7 @@ import {SET_CHAT_OFFLINE} from '../actions/app-state-actions';
 import {SET_CAMPAIGNS} from '../actions/app-state-actions';
 import {INCREMENT_TIME_SPENT_ON_PAGE} from '../actions/app-state-actions';
 import {DISPLAY_CAMPAIGN} from "../actions/app-state-actions";
+import {HIDE_CAMPAIGN} from "../actions/app-state-actions";
 
 const INITIAL_STATE = {
     settingsVisible: false,
@@ -111,7 +112,8 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 widgetState: WIDGET_STATE.OPENED,
-                showAnimation: true
+                showAnimation: true,
+                displayedCampaigns: []
             };
 
         case AppStateActions.CLOSE_WIDGET:
@@ -262,11 +264,28 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
                 timeSpentOnPage: state.timeSpentOnPage + action.seconds
             };
 
-        case DISPLAY_CAMPAIGN:
+        case DISPLAY_CAMPAIGN: {
+            const newDisplayedCampaigns = [].concat(state.displayedCampaigns);
+            newDisplayedCampaigns.push(action.campaign);
+
             return {
                 ...state,
-                displayedCampaigns: Object.assign([], state.displayedCampaigns, [action.campaign])
-            }
+                displayedCampaigns: newDisplayedCampaigns
+            };
+        }
+
+        case HIDE_CAMPAIGN: {
+            const newCampaigns = [].concat(state.campaigns)
+                .filter((c) => c.slug !== action.campaign.slug);
+            const newDisplayedCampaigns = [].concat(state.displayedCampaigns)
+                .filter((c) => c.slug !== action.campaign.slug);
+
+            return {
+                ...state,
+                displayedCampaigns: newDisplayedCampaigns,
+                campaigns: newCampaigns
+            };
+        }
 
         default:
             return state;

@@ -1,4 +1,4 @@
-import {shouldDisplayCampaign} from "../utils/campaigns";
+import {shouldDisplayCampaign} from '../utils/campaigns';
 
 export const TOGGLE_WIDGET = 'TOGGLE_WIDGET';
 export const OPEN_WIDGET = 'OPEN_WIDGET';
@@ -36,7 +36,9 @@ export const SET_CHAT_OFFLINE = 'SET_CHAT_OFFLINE';
 export const SET_CAMPAIGNS = 'SET_CAMPAIGNS';
 export const INCREMENT_TIME_SPENT_ON_PAGE = 'INCREMENT_TIME_SPENT_ON_PAGE';
 export const TIME_SPENT_ON_PAGE_OFFSET = 60;
+
 export const DISPLAY_CAMPAIGN = 'DISPLAY_CAMPAIGN';
+export const HIDE_CAMPAIGN = 'HIDE_CAMPAIGN';
 
 
 export function toggleWidget() {
@@ -252,6 +254,24 @@ export function displayCampaign(campaign) {
         type: DISPLAY_CAMPAIGN,
         campaign
     };
+}
+
+export function hideCampaign(campaign) {
+    return {
+        type: HIDE_CAMPAIGN,
+        campaign
+    };
+}
+
+export function hideAllDisplayedCampaigns() {
+    return (dispatch, getState) => {
+        const state = getState();
+        const displayedCampaigns = state.appState.displayedCampaigns;
+
+        displayedCampaigns.forEach((campaign) => {
+            dispatch(hideCampaign(campaign));
+        });
+    }
 }
 
 export function computeDisplayedCampaigns() {
