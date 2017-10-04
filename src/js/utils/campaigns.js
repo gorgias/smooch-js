@@ -20,7 +20,7 @@ function validateCurrentUrlTrigger(trigger, currentUrl) {
 function validateTimeSpentOnPage(trigger, timeSpentOnPage) {
     switch (trigger.operator) {
         case 'gt':
-            return timeSpentOnPage > trigger.value;
+            return timeSpentOnPage >= trigger.value;
         default:
             return false;
     }

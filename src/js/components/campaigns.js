@@ -18,7 +18,7 @@ export class CampaignListComponent extends React.Component {
     render() {
         const {campaigns} = this.props;
 
-        console.log(campaigns);
+        const reversedCampaigns = campaigns.reverse()
 
         return (
             <div className='campaigns'>
@@ -30,7 +30,7 @@ export class CampaignListComponent extends React.Component {
                     transitionLeaveTimeout={200}
                 >
                 {
-                    campaigns.map((campaign) => {
+                    reversedCampaigns.map((campaign) => {
                         const avatar_url = campaign.message.author ? campaign.message.author.avatar_url : ''
 
                         const author_name = campaign.message.author ? campaign.message.author.name : ''
