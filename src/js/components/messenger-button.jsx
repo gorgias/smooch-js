@@ -29,10 +29,10 @@ export class MessengerButtonComponent extends Component {
     }
 
     onClick(e) {
-        const {dispatch, areCampaignsDisplayed} = this.props;
+        const {dispatch, areCampaignsDisplayed, isWidgetOpen} = this.props;
         e.preventDefault();
 
-        if (areCampaignsDisplayed) {
+        if (areCampaignsDisplayed && !isWidgetOpen) {
             dispatch(hideAllDisplayedCampaigns());
         } else {
             dispatch(toggleWidget());
