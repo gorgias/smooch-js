@@ -190,21 +190,21 @@ export class Smooch {
 
         store.dispatch(batchActions(actions));
 
-        // This chunk needs to be executed AFTER the batchActions above
-        if (props.campaigns) {
-            store.dispatch(AppStateActions.computeDisplayedCampaigns());
-
-            // If there's campaigns, we need to count the time spent on the page by the user
-            // in order of handling the timeSpentOnPage trigger
-            setTimeout(() => {
-                _incrementTimeSpentOnPage(store, TIME_SPENT_ON_PAGE_OFFSET);
-            }, TIME_SPENT_ON_PAGE_OFFSET * 1000);
-        }
-
         unsubscribeFromStore = observeStore(store, ({conversation}) => conversation, onStoreChange);
 
         monitorBrowserState(store.dispatch.bind(store));
-        return this.login(props.userId, props.jwt, pick(props, EDITABLE_PROPERTIES));
+        return this.login(props.userId, props.jwt, pick(props, EDITABLE_PROPERTIES)).then(() => {
+            // This chunk needs to be executed AFTER the login so that it has access to the appToken
+            if (props.campaigns) {
+                store.dispatch(AppStateActions.computeDisplayedCampaigns());
+
+                // If there's campaigns, we need to count the time spent on the page by the user
+                // in order of handling the timeSpentOnPage trigger
+                setTimeout(() => {
+                    _incrementTimeSpentOnPage(store, TIME_SPENT_ON_PAGE_OFFSET);
+                }, TIME_SPENT_ON_PAGE_OFFSET * 1000);
+            }
+        });
     }
 
     login(userId = '', jwt, attributes) {

@@ -10,6 +10,7 @@ import {DISPLAY_CAMPAIGN} from '../actions/app-state-actions';
 import {HIDE_CAMPAIGN} from '../actions/app-state-actions';
 import {storage} from '../utils/storage';
 import {CAMPAIGNS_SEEN_KEY} from '../actions/app-state-actions';
+import {CAMPAIGNS_SEEN_TEMPLATE} from "../actions/app-state-actions";
 
 const INITIAL_STATE = {
     settingsVisible: false,
@@ -275,7 +276,11 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
             if (campaignsSeen) {
                 campaignsSeen = campaignsSeen.split(',');
 
-                if (campaignsSeen.includes(action.campaign.slug)) {
+                const campaignUniqueId = CAMPAIGNS_SEEN_TEMPLATE
+                    .replace('{appToken}', action.appToken)
+                    .replace('{slug}', action.campaign.slug)
+
+                if (campaignsSeen.includes(campaignUniqueId)) {
                     return state;
                 }
             }
@@ -304,11 +309,12 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
             campaignsSeen = campaignsSeen.split(',');
 
             if (!campaignsSeen.includes(action.campaign.slug)) {
-                campaignsSeen.push(action.campaign.slug);
+                campaignsSeen.push(CAMPAIGNS_SEEN_TEMPLATE
+                    .replace('{appToken}', action.appToken)
+                    .replace('{slug}', action.campaign.slug)
+                );
                 campaignsSeen = campaignsSeen.join(',');
                 storage.setItem(CAMPAIGNS_SEEN_KEY, campaignsSeen);
-
-                console.log(campaignsSeen);
             }
 
             return {
