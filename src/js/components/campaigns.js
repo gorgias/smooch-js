@@ -54,8 +54,7 @@ export class CampaignListComponent extends React.Component {
                 {
                     reversedCampaigns.map((campaign) => {
                         if (_isEmpty(campaign.message.author) && displayAgents.length) {
-                            const randomIndex = Math.floor(Math.random() * (displayAgents.length));
-                            campaign.message.author = displayAgents[randomIndex];
+                            campaign.message.author = displayAgents[0];
                         }
 
                         const authorAvatarUrl = campaign.message.author ? campaign.message.author.avatar_url : '';
