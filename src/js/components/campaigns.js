@@ -73,7 +73,7 @@ export class CampaignListComponent extends React.Component {
                                         <div className='author-name'>
                                             {authorName}
                                         </div>
-                                        {campaign.message.text}
+                                        <div dangerouslySetInnerHTML={{__html: campaign.message.html}}/>
                                     </div>
                                 </div>
 

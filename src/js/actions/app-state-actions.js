@@ -37,7 +37,6 @@ export const SET_CAMPAIGNS = 'SET_CAMPAIGNS';
 export const INCREMENT_TIME_SPENT_ON_PAGE = 'INCREMENT_TIME_SPENT_ON_PAGE';
 export const TIME_SPENT_ON_PAGE_OFFSET = 1;
 export const CAMPAIGNS_SEEN_KEY = 'gorgias.seen-campaigns-slugs';
-export const CAMPAIGNS_SEEN_TEMPLATE = '{appToken}-{slug}';
 
 export const DISPLAY_CAMPAIGN = 'DISPLAY_CAMPAIGN';
 export const HIDE_CAMPAIGN = 'HIDE_CAMPAIGN';
@@ -252,26 +251,16 @@ export function incrementTimeSpentOnPage(seconds) {
 }
 
 export function displayCampaign(campaign) {
-    return (dispatch, getState) => {
-        const appToken = getState().auth.appToken;
-
-        return dispatch({
+        return {
             type: DISPLAY_CAMPAIGN,
-            campaign,
-            appToken
-        });
-    };
+            campaign
+        };
 }
 
 export function hideCampaign(campaign) {
-    return (dispatch, getState) => {
-        const appToken = getState().auth.appToken;
-
-        return dispatch({
-            type: HIDE_CAMPAIGN,
-            campaign,
-            appToken
-        });
+    return {
+        type: HIDE_CAMPAIGN,
+        campaign
     };
 }
 
