@@ -15,7 +15,8 @@ const campaignMessage = (text, authorName, authorAvatarUrl) => {
         type: 'text',
         text,
         name: authorName,
-        avatarUrl: authorAvatarUrl
+        avatarUrl: authorAvatarUrl,
+        received: Math.round((new Date()).getTime() / 1000)
     };
 }
 
