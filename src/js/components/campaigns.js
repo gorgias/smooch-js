@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
+import _isEmpty from 'lodash/isEmpty';
 import * as appStateActions from './../actions/app-state-actions';
 import * as conversationActions from './../actions/conversation-actions';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -18,14 +19,15 @@ const campaignMessage = (text, authorName, authorAvatarUrl) => {
         avatarUrl: authorAvatarUrl,
         received: Math.round((new Date()).getTime() / 1000)
     };
-}
+};
 
 export class CampaignListComponent extends React.Component {
     static propTypes = {
         campaigns: PropTypes.array.isRequired,
         hideAllDisplayedCampaigns: PropTypes.func.isRequired,
         openWidget: PropTypes.func.isRequired,
-        addMessage: PropTypes.func.isRequired
+        addMessage: PropTypes.func.isRequired,
+        displayAgents: PropTypes.array.isRequired
     }
 
     _replyToCampaign = (text, authorName, authorAvatarUrl) => {
@@ -35,9 +37,10 @@ export class CampaignListComponent extends React.Component {
     }
 
     render() {
-        const {campaigns} = this.props;
+        const {campaigns, displayAgents} = this.props;
 
-        const reversedCampaigns = campaigns.reverse()
+        // We reverse the campaigns order so that new campaigns appear on the top
+        const reversedCampaigns = campaigns.reverse();
 
         return (
             <div className='campaigns'>
@@ -50,9 +53,13 @@ export class CampaignListComponent extends React.Component {
                 >
                 {
                     reversedCampaigns.map((campaign) => {
-                        const authorAvatarUrl = campaign.message.author ? campaign.message.author.avatar_url : ''
+                        if (_isEmpty(campaign.message.author) && displayAgents.length) {
+                            const randomIndex = Math.floor(Math.random() * (displayAgents.length));
+                            campaign.message.author = displayAgents[randomIndex];
+                        }
 
-                        const authorName = campaign.message.author ? campaign.message.author.name : ''
+                        const authorAvatarUrl = campaign.message.author ? campaign.message.author.avatar_url : '';
+                        const authorName = campaign.message.author ? campaign.message.author.name : '';
 
                         return (
                             <div
@@ -87,7 +94,11 @@ export class CampaignListComponent extends React.Component {
     }
 }
 
-export const CampaignList = connect(null, {
+export const CampaignList = connect(({appState: {displayAgents}}) => {
+    return {
+        displayAgents
+    };
+}, {
     hideAllDisplayedCampaigns: appStateActions.hideAllDisplayedCampaigns,
     openWidget: appStateActions.openWidget,
     addMessage: conversationActions.addMessage
