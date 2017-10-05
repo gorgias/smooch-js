@@ -10,7 +10,7 @@ import {DISPLAY_CAMPAIGN} from '../actions/app-state-actions';
 import {HIDE_CAMPAIGN} from '../actions/app-state-actions';
 import {storage} from '../utils/storage';
 import {CAMPAIGNS_SEEN_KEY} from '../actions/app-state-actions';
-import {CAMPAIGNS_SEEN_TEMPLATE} from "../actions/app-state-actions";
+import {CAMPAIGNS_SEEN_TEMPLATE} from '../actions/app-state-actions';
 
 const INITIAL_STATE = {
     settingsVisible: false,

@@ -1,18 +1,36 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import * as appStateActions from './../actions/app-state-actions';
+import * as conversationActions from './../actions/conversation-actions';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+const campaignMessage = (text, authorName, authorAvatarUrl) => {
+    return {
+        firstInGroup: true,
+        lastInGroup: true,
+        role: 'appMaker',
+        source: {
+            type: 'api'
+        },
+        type: 'text',
+        text,
+        name: authorName,
+        avatarUrl: authorAvatarUrl
+    };
+}
 
 export class CampaignListComponent extends React.Component {
     static propTypes = {
         campaigns: PropTypes.array.isRequired,
         hideAllDisplayedCampaigns: PropTypes.func.isRequired,
-        openWidget: PropTypes.func.isRequired
+        openWidget: PropTypes.func.isRequired,
+        addMessage: PropTypes.func.isRequired
     }
 
-    _replyToCampaign = () => {
+    _replyToCampaign = (text, authorName, authorAvatarUrl) => {
         this.props.hideAllDisplayedCampaigns();
         this.props.openWidget();
+        this.props.addMessage(campaignMessage(text, authorName, authorAvatarUrl));
     }
 
     render() {
@@ -31,9 +49,9 @@ export class CampaignListComponent extends React.Component {
                 >
                 {
                     reversedCampaigns.map((campaign) => {
-                        const avatar_url = campaign.message.author ? campaign.message.author.avatar_url : ''
+                        const authorAvatarUrl = campaign.message.author ? campaign.message.author.avatar_url : ''
 
-                        const author_name = campaign.message.author ? campaign.message.author.name : ''
+                        const authorName = campaign.message.author ? campaign.message.author.name : ''
 
                         return (
                             <div
@@ -42,11 +60,11 @@ export class CampaignListComponent extends React.Component {
                             >
                                 <div className='message-area'>
                                     <div className='avatar'>
-                                        <img src={avatar_url}/>
+                                        <img src={authorAvatarUrl}/>
                                     </div>
                                     <div className='message'>
                                         <div className='author-name'>
-                                            {author_name}
+                                            {authorName}
                                         </div>
                                         {campaign.message.text}
                                     </div>
@@ -54,7 +72,7 @@ export class CampaignListComponent extends React.Component {
 
                                 <div
                                     className='reply-area'
-                                    onClick={() => this._replyToCampaign()}
+                                    onClick={() => this._replyToCampaign(campaign.message.text, authorName, authorAvatarUrl)}
                                 >
                                     Click to reply
                                 </div>
@@ -70,5 +88,6 @@ export class CampaignListComponent extends React.Component {
 
 export const CampaignList = connect(null, {
     hideAllDisplayedCampaigns: appStateActions.hideAllDisplayedCampaigns,
-    openWidget: appStateActions.openWidget
+    openWidget: appStateActions.openWidget,
+    addMessage: conversationActions.addMessage
 })(CampaignListComponent);
