@@ -6,8 +6,10 @@ import {SET_DISPLAY_AGENTS} from '../actions/app-state-actions';
 import {SET_CHAT_OFFLINE} from '../actions/app-state-actions';
 import {SET_CAMPAIGNS} from '../actions/app-state-actions';
 import {INCREMENT_TIME_SPENT_ON_PAGE} from '../actions/app-state-actions';
-import {DISPLAY_CAMPAIGN} from "../actions/app-state-actions";
-import {HIDE_CAMPAIGN} from "../actions/app-state-actions";
+import {DISPLAY_CAMPAIGN} from '../actions/app-state-actions';
+import {HIDE_CAMPAIGN} from '../actions/app-state-actions';
+import {storage} from '../utils/storage';
+import {CAMPAIGNS_SEEN_KEY} from '../actions/app-state-actions';
 
 const INITIAL_STATE = {
     settingsVisible: false,
@@ -112,8 +114,7 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 widgetState: WIDGET_STATE.OPENED,
-                showAnimation: true,
-                displayedCampaigns: []
+                showAnimation: true
             };
 
         case AppStateActions.CLOSE_WIDGET:
@@ -269,6 +270,16 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
                 return state;
             }
 
+            let campaignsSeen = storage.getItem(CAMPAIGNS_SEEN_KEY);
+
+            if (campaignsSeen) {
+                campaignsSeen = campaignsSeen.split(',');
+
+                if (campaignsSeen.includes(action.campaign.slug)) {
+                    return state;
+                }
+            }
+
             const newDisplayedCampaigns = [].concat(state.displayedCampaigns);
             newDisplayedCampaigns.push(action.campaign);
 
@@ -283,6 +294,22 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
                 .filter((c) => c.slug !== action.campaign.slug);
             const newDisplayedCampaigns = [].concat(state.displayedCampaigns)
                 .filter((c) => c.slug !== action.campaign.slug);
+
+            let campaignsSeen = storage.getItem(CAMPAIGNS_SEEN_KEY);
+
+            if (!campaignsSeen) {
+                campaignsSeen = '';
+            }
+
+            campaignsSeen = campaignsSeen.split(',');
+
+            if (!campaignsSeen.includes(action.campaign.slug)) {
+                campaignsSeen.push(action.campaign.slug);
+                campaignsSeen = campaignsSeen.join(',');
+                storage.setItem(CAMPAIGNS_SEEN_KEY, campaignsSeen);
+
+                console.log(campaignsSeen);
+            }
 
             return {
                 ...state,

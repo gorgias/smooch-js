@@ -35,7 +35,8 @@ export const SET_DISPLAY_AGENTS = 'SET_DISPLAY_AGENTS';
 export const SET_CHAT_OFFLINE = 'SET_CHAT_OFFLINE';
 export const SET_CAMPAIGNS = 'SET_CAMPAIGNS';
 export const INCREMENT_TIME_SPENT_ON_PAGE = 'INCREMENT_TIME_SPENT_ON_PAGE';
-export const TIME_SPENT_ON_PAGE_OFFSET = 60;
+export const TIME_SPENT_ON_PAGE_OFFSET = 1;
+export const CAMPAIGNS_SEEN_KEY = 'gorgias.seen-campaigns-slugs';
 
 export const DISPLAY_CAMPAIGN = 'DISPLAY_CAMPAIGN';
 export const HIDE_CAMPAIGN = 'HIDE_CAMPAIGN';
@@ -271,7 +272,7 @@ export function hideAllDisplayedCampaigns() {
         displayedCampaigns.forEach((campaign) => {
             dispatch(hideCampaign(campaign));
         });
-    }
+    };
 }
 
 export function computeDisplayedCampaigns() {

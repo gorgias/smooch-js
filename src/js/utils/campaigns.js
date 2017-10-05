@@ -27,7 +27,7 @@ function validateTimeSpentOnPage(trigger, timeSpentOnPage) {
 }
 
 export function shouldDisplayCampaign(campaign, context) {
-    let shouldDisplay = true
+    let shouldDisplay = true;
     const triggers = campaign.triggers;
 
     triggers.forEach((trigger) => {
