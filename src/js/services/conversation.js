@@ -438,7 +438,6 @@ export function sendChain(sendFn, message) {
 
         const postSendHandler = (response) => {
             return Promise.resolve(dispatch(onMessageSendSuccess(message, response)))
-                .then(() => dispatch(handleConnectNotification(response)))
                 .then(() => dispatch(connectFayeConversation()))
                 .catch(); // swallow errors to avoid uncaught promises bubbling up
         };

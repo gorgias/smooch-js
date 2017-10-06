@@ -6,7 +6,6 @@ const INITIAL_STATE = {
         headerText: 'Gorgias Team',
         inputPlaceholder: 'Type a message...',
         introductionText: 'How can we help?', // 'We\'re here to talk, so ask us anything!',
-        offlineIntroductionText: 'We\'ll be back tomorrow',
         settingsText: 'You can leave us your email so that we can get back to you this way.',
         settingsReadOnlyText: 'We\'ll get back to you at this email address if we missed you.',
         settingsInputPlaceholder: 'Your email address',
@@ -58,7 +57,15 @@ const INITIAL_STATE = {
         locationSendingFailed: 'Could not send location',
         locationServicesDenied: 'This website cannot access your location. Allow access in your settings or type your location instead.',
         locationNotSupported: 'Your browser does not support location services or it’s been disabled. Please type your location instead.',
-        locationSecurityRestriction: 'This website cannot access your location. Please type your location instead.'
+        locationSecurityRestriction: 'This website cannot access your location. Please type your location instead.',
+
+        // Gorgias variables
+        offlineIntroductionText: 'We\'ll be back tomorrow',
+        emailCapturePlaceholder: 'your@email.com',
+        emailCaptureOnlineTriggerText: '',
+        emailCaptureOnlineThanksText: '',
+        emailCaptureOfflineTriggerText: '',
+        emailCaptureOfflineThanksText: ''
     }
 };
 
