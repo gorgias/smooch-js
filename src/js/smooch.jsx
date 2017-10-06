@@ -110,7 +110,6 @@ function onStoreChange({messages, unreadCount}) {
 }
 
 function _incrementTimeSpentOnPage(store, seconds) {
-    console.log('cronjob')
     store.dispatch(AppStateActions.incrementTimeSpentOnPage(seconds));
     store.dispatch(AppStateActions.computeDisplayedCampaigns());
     setTimeout(() => _incrementTimeSpentOnPage(store, seconds), seconds * 1000);
