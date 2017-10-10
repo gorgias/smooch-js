@@ -4,11 +4,13 @@ import _isEmpty from 'lodash/isEmpty';
 import * as appStateActions from './../actions/app-state-actions';
 import * as conversationActions from './../actions/conversation-actions';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import {openWidget} from "../services/app";
 
-const campaignMessage = (text, authorName, authorAvatarUrl) => {
+const campaignMessage = (id, text, authorName, authorAvatarUrl, firstInGroup, lastInGroup) => {
     return {
-        firstInGroup: true,
-        lastInGroup: true,
+        _id: id,
+        firstInGroup: firstInGroup,
+        lastInGroup: lastInGroup,
         role: 'appMaker',
         source: {
             type: 'api'
@@ -30,10 +32,20 @@ export class CampaignListComponent extends React.Component {
         displayAgents: PropTypes.array.isRequired
     }
 
-    _replyToCampaign = (text, authorName, authorAvatarUrl) => {
+    _replyToCampaign = () => {
+        const {campaigns} = this.props
+
         this.props.hideAllDisplayedCampaigns();
         this.props.openWidget();
-        this.props.addMessage(campaignMessage(text, authorName, authorAvatarUrl));
+
+        campaigns.forEach((campaign, idx) => {
+            const authorAvatarUrl = campaign.message.author ? campaign.message.author.avatar_url : '';
+            const authorName = campaign.message.author ? campaign.message.author.name : '';
+            const firstInGroup = idx === 0
+            const lastInGroup = idx === campaigns.length - 1
+
+            this.props.addMessage(campaignMessage(campaign.id, campaign.message.text, authorName, authorAvatarUrl, firstInGroup, lastInGroup));
+        });
     }
 
     render() {
@@ -51,42 +63,45 @@ export class CampaignListComponent extends React.Component {
                     transitionEnterTimeout={200}
                     transitionLeaveTimeout={200}
                 >
-                {
-                    reversedCampaigns.map((campaign) => {
-                        if (_isEmpty(campaign.message.author) && displayAgents.length) {
-                            campaign.message.author = displayAgents[0];
-                        }
-
-                        const authorAvatarUrl = campaign.message.author ? campaign.message.author.avatar_url : '';
-                        const authorName = campaign.message.author ? campaign.message.author.name : '';
-
-                        return (
+                    {
+                        reversedCampaigns.length && (
                             <div
-                                key={campaign.id}
                                 className='campaign'
+                                onClick={() => this._replyToCampaign()}
                             >
-                                <div className='message-area'>
-                                    <div className='avatar'>
-                                        <img src={authorAvatarUrl}/>
-                                    </div>
-                                    <div className='message'>
-                                        <div className='author-name'>
-                                            {authorName}
-                                        </div>
-                                        <div dangerouslySetInnerHTML={{__html: campaign.message.html}}/>
-                                    </div>
-                                </div>
+                                {
+                                    reversedCampaigns.map((campaign) => {
+                                        if (_isEmpty(campaign.message.author) && displayAgents.length) {
+                                            campaign.message.author = displayAgents[0];
+                                        }
 
-                                <div
-                                    className='reply-area'
-                                    onClick={() => this._replyToCampaign(campaign.message.text, authorName, authorAvatarUrl)}
-                                >
+                                        const authorAvatarUrl = campaign.message.author ? campaign.message.author.avatar_url : '';
+                                        const authorName = campaign.message.author ? campaign.message.author.name : '';
+
+                                        return (
+                                                <div
+                                                    key={campaign.id}
+                                                    className='message-area'
+                                                >
+                                                    <div className='avatar'>
+                                                        <img src={authorAvatarUrl}/>
+                                                    </div>
+                                                    <div className='message'>
+                                                        <div className='author-name'>
+                                                            {authorName}
+                                                        </div>
+                                                        <div dangerouslySetInnerHTML={{__html: campaign.message.html}}/>
+                                                    </div>
+                                                </div>
+                                        );
+                                    })
+                                }
+                                <div className='reply-area'>
                                     Click to reply
                                 </div>
                             </div>
-                        );
-                    })
-                }
+                        )
+                    }
                 </ReactCSSTransitionGroup>
             </div>
         );
@@ -99,6 +114,6 @@ export const CampaignList = connect(({appState: {displayAgents}}) => {
     };
 }, {
     hideAllDisplayedCampaigns: appStateActions.hideAllDisplayedCampaigns,
-    openWidget: appStateActions.openWidget,
+    openWidget: openWidget,
     addMessage: conversationActions.addMessage
 })(CampaignListComponent);

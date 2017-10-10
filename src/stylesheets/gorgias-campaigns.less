@@ -47,6 +47,10 @@
     margin-top: 20px;
 
     .message-area {
+      &:not(:first-child) {
+        border-top: 1px solid @gorgias-light-grey;
+      }
+
       display: flex;
       flex-direction: row;
       padding: 10px;
@@ -70,6 +74,10 @@
 
       .message {
         padding: 10px;
+
+        img {
+          max-width: 100%;
+        }
       }
     }
 
@@ -78,6 +86,15 @@
       padding: 20px;
       border-top: 1px solid @gorgias-light-grey;
       color: @sk-medium-grey;
+    }
+  }
+
+  @media (max-width: @screen-sm-min) {
+    max-width: 65%;
+    right: 10px;
+
+    .campaign .message-area .avatar {
+      display: none;
     }
   }
 }
