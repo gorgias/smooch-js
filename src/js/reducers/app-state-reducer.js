@@ -266,7 +266,7 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
             };
 
         case DISPLAY_CAMPAIGN: {
-            if (state.displayedCampaigns.find((c) => c.slug === action.campaign.slug)) {
+            if (state.displayedCampaigns.find((c) => c.id === action.campaign.id)) {
                 return state;
             }
 
@@ -275,7 +275,7 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
             if (campaignsSeen) {
                 campaignsSeen = campaignsSeen.split(',');
 
-                if (campaignsSeen.includes(action.campaign.slug)) {
+                if (campaignsSeen.includes(action.campaign.id)) {
                     return state;
                 }
             }
@@ -291,9 +291,9 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
 
         case HIDE_CAMPAIGN: {
             const newCampaigns = [].concat(state.campaigns)
-                .filter((c) => c.slug !== action.campaign.slug);
+                .filter((c) => c.id !== action.campaign.id);
             const newDisplayedCampaigns = [].concat(state.displayedCampaigns)
-                .filter((c) => c.slug !== action.campaign.slug);
+                .filter((c) => c.id !== action.campaign.id);
 
             let campaignsSeen = storage.getItem(CAMPAIGNS_SEEN_KEY);
 
@@ -303,8 +303,8 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
 
             campaignsSeen = campaignsSeen.split(',');
 
-            if (!campaignsSeen.includes(action.campaign.slug)) {
-                campaignsSeen.push(action.campaign.slug);
+            if (!campaignsSeen.includes(action.campaign.id)) {
+                campaignsSeen.push(action.campaign.id);
                 campaignsSeen = campaignsSeen.join(',');
                 storage.setItem(CAMPAIGNS_SEEN_KEY, campaignsSeen);
             }

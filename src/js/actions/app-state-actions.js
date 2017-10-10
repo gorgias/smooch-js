@@ -36,7 +36,7 @@ export const SET_CHAT_OFFLINE = 'SET_CHAT_OFFLINE';
 export const SET_CAMPAIGNS = 'SET_CAMPAIGNS';
 export const INCREMENT_TIME_SPENT_ON_PAGE = 'INCREMENT_TIME_SPENT_ON_PAGE';
 export const TIME_SPENT_ON_PAGE_OFFSET = 1;
-export const CAMPAIGNS_SEEN_KEY = 'gorgias.seen-campaigns-slugs';
+export const CAMPAIGNS_SEEN_KEY = 'gorgias.seen-campaigns-ids';
 
 export const DISPLAY_CAMPAIGN = 'DISPLAY_CAMPAIGN';
 export const HIDE_CAMPAIGN = 'HIDE_CAMPAIGN';

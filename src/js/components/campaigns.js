@@ -62,7 +62,7 @@ export class CampaignListComponent extends React.Component {
 
                         return (
                             <div
-                                key={campaign.slug}
+                                key={campaign.id}
                                 className='campaign'
                             >
                                 <div className='message-area'>
