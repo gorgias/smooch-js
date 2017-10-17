@@ -1,3 +1,5 @@
+import {shouldDisplayCampaign} from '../utils/campaigns';
+
 export const TOGGLE_WIDGET = 'TOGGLE_WIDGET';
 export const OPEN_WIDGET = 'OPEN_WIDGET';
 export const CLOSE_WIDGET = 'CLOSE_WIDGET';
@@ -27,8 +29,18 @@ export const SET_FETCHING_MORE_MESSAGES = 'SET_FETCHING_MORE_MESSAGES';
 export const SET_SHOULD_SCROLL_TO_BOTTOM = 'SET_SHOULD_SCROLL_TO_BOTTOM';
 export const SHOW_TYPING_INDICATOR = 'SHOW_TYPING_INDICATOR';
 export const HIDE_TYPING_INDICATOR = 'HIDE_TYPING_INDICATOR';
+
+// Gorgias constants
 export const SET_DISPLAY_AGENTS = 'SET_DISPLAY_AGENTS';
 export const SET_CHAT_OFFLINE = 'SET_CHAT_OFFLINE';
+export const SET_CAMPAIGNS = 'SET_CAMPAIGNS';
+export const INCREMENT_TIME_SPENT_ON_PAGE = 'INCREMENT_TIME_SPENT_ON_PAGE';
+export const TIME_SPENT_ON_PAGE_OFFSET = 1;
+export const CAMPAIGNS_SEEN_KEY = 'gorgias.seen-campaigns-ids';
+
+export const DISPLAY_CAMPAIGN = 'DISPLAY_CAMPAIGN';
+export const HIDE_CAMPAIGN = 'HIDE_CAMPAIGN';
+
 
 export function toggleWidget() {
     return {
@@ -209,6 +221,8 @@ export function hideTypingIndicator() {
     };
 }
 
+// Gorgias actions
+
 export function setDisplayAgents(displayAgents) {
     return {
         type: SET_DISPLAY_AGENTS,
@@ -219,5 +233,62 @@ export function setDisplayAgents(displayAgents) {
 export function setChatOffline() {
     return {
         type: SET_CHAT_OFFLINE
+    };
+}
+
+export function setCampaigns(campaigns) {
+    return {
+        type: SET_CAMPAIGNS,
+        campaigns
+    };
+}
+
+export function incrementTimeSpentOnPage(seconds) {
+    return {
+        type: INCREMENT_TIME_SPENT_ON_PAGE,
+        seconds
+    };
+}
+
+export function displayCampaign(campaign) {
+        return {
+            type: DISPLAY_CAMPAIGN,
+            campaign
+        };
+}
+
+export function hideCampaign(campaign) {
+    return {
+        type: HIDE_CAMPAIGN,
+        campaign
+    };
+}
+
+export function hideAllDisplayedCampaigns() {
+    return (dispatch, getState) => {
+        const state = getState();
+        const displayedCampaigns = state.appState.displayedCampaigns;
+
+        displayedCampaigns.forEach((campaign) => {
+            dispatch(hideCampaign(campaign));
+        });
+    };
+}
+
+export function computeDisplayedCampaigns() {
+    return (dispatch, getState) => {
+        const state = getState();
+        const campaigns = state.appState.campaigns;
+
+        const context = {
+            timeSpentOnPage: state.appState.timeSpentOnPage,
+            currentUrl: window.location.href.replace('http://', '').replace('https://', '')
+        };
+
+        campaigns.forEach((campaign) => {
+            if (shouldDisplayCampaign(campaign, context)) {
+                dispatch(displayCampaign(campaign));
+            }
+        });
     };
 }

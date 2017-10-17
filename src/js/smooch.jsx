@@ -34,6 +34,7 @@ import { VERSION } from './constants/version';
 import { WIDGET_STATE } from './constants/app';
 
 import { Root } from './root';
+import {TIME_SPENT_ON_PAGE_OFFSET} from './actions/app-state-actions';
 
 
 function renderWidget(container) {
@@ -108,9 +109,13 @@ function onStoreChange({messages, unreadCount}) {
     }
 }
 
-export class Smooch {
-    VERSION = VERSION
+function _incrementTimeSpentOnPage(store, seconds) {
+    store.dispatch(AppStateActions.incrementTimeSpentOnPage(seconds));
+    store.dispatch(AppStateActions.computeDisplayedCampaigns());
+    setTimeout(() => _incrementTimeSpentOnPage(store, seconds), seconds * 1000);
+}
 
+export class Smooch {
     on() {
         return observable.on(...arguments);
     }
@@ -177,7 +182,23 @@ export class Smooch {
             actions.push(AppStateActions.setChatOffline());
         }
 
+        // Campaigns
+        if (props.campaigns) {
+            actions.push(AppStateActions.setCampaigns(props.campaigns));
+        }
+
         store.dispatch(batchActions(actions));
+
+        // This needs to be executed after the first batch of actions above
+        if (props.campaigns) {
+            store.dispatch(AppStateActions.computeDisplayedCampaigns());
+
+            // If there's campaigns, we need to count the time spent on the page by the user
+            // in order of handling the timeSpentOnPage trigger
+            setTimeout(() => {
+                _incrementTimeSpentOnPage(store, TIME_SPENT_ON_PAGE_OFFSET);
+            }, TIME_SPENT_ON_PAGE_OFFSET * 1000);
+        }
 
         unsubscribeFromStore = observeStore(store, ({conversation}) => conversation, onStoreChange);
 

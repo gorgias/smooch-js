@@ -2,8 +2,14 @@ import * as AppStateActions from '../actions/app-state-actions';
 import { RESET } from '../actions/common-actions';
 import { RESET_CONVERSATION, ADD_MESSAGE } from '../actions/conversation-actions';
 import { WIDGET_STATE } from '../constants/app';
-import {SET_DISPLAY_AGENTS} from "../actions/app-state-actions";
-import {SET_CHAT_OFFLINE} from "../actions/app-state-actions";
+import {SET_DISPLAY_AGENTS} from '../actions/app-state-actions';
+import {SET_CHAT_OFFLINE} from '../actions/app-state-actions';
+import {SET_CAMPAIGNS} from '../actions/app-state-actions';
+import {INCREMENT_TIME_SPENT_ON_PAGE} from '../actions/app-state-actions';
+import {DISPLAY_CAMPAIGN} from '../actions/app-state-actions';
+import {HIDE_CAMPAIGN} from '../actions/app-state-actions';
+import {storage} from '../utils/storage';
+import {CAMPAIGNS_SEEN_KEY} from '../actions/app-state-actions';
 
 const INITIAL_STATE = {
     settingsVisible: false,
@@ -29,7 +35,10 @@ const INITIAL_STATE = {
 
     // Gorgias variables
     displayAgents: [],
-    isChatOnline: true
+    isChatOnline: true,
+    campaigns: [],
+    displayedCampaigns: [],
+    timeSpentOnPage: 0
 };
 
 export function AppStateReducer(state = INITIAL_STATE, action) {
@@ -243,6 +252,69 @@ export function AppStateReducer(state = INITIAL_STATE, action) {
                 ...state,
                 isChatOnline: false
             };
+
+        case SET_CAMPAIGNS:
+            return {
+                ...state,
+                campaigns: action.campaigns
+            };
+
+        case INCREMENT_TIME_SPENT_ON_PAGE:
+            return {
+                ...state,
+                timeSpentOnPage: state.timeSpentOnPage + action.seconds
+            };
+
+        case DISPLAY_CAMPAIGN: {
+            if (state.displayedCampaigns.find((c) => c.id === action.campaign.id)) {
+                return state;
+            }
+
+            let campaignsSeen = storage.getItem(CAMPAIGNS_SEEN_KEY);
+
+            if (campaignsSeen) {
+                campaignsSeen = campaignsSeen.split(',');
+
+                if (campaignsSeen.includes(action.campaign.id)) {
+                    return state;
+                }
+            }
+
+            const newDisplayedCampaigns = [].concat(state.displayedCampaigns);
+            newDisplayedCampaigns.push(action.campaign);
+
+            return {
+                ...state,
+                displayedCampaigns: newDisplayedCampaigns
+            };
+        }
+
+        case HIDE_CAMPAIGN: {
+            const newCampaigns = [].concat(state.campaigns)
+                .filter((c) => c.id !== action.campaign.id);
+            const newDisplayedCampaigns = [].concat(state.displayedCampaigns)
+                .filter((c) => c.id !== action.campaign.id);
+
+            let campaignsSeen = storage.getItem(CAMPAIGNS_SEEN_KEY);
+
+            if (!campaignsSeen) {
+                campaignsSeen = '';
+            }
+
+            campaignsSeen = campaignsSeen.split(',');
+
+            if (!campaignsSeen.includes(action.campaign.id)) {
+                campaignsSeen.push(action.campaign.id);
+                campaignsSeen = campaignsSeen.join(',');
+                storage.setItem(CAMPAIGNS_SEEN_KEY, campaignsSeen);
+            }
+
+            return {
+                ...state,
+                displayedCampaigns: newDisplayedCampaigns,
+                campaigns: newCampaigns
+            };
+        }
 
         default:
             return state;

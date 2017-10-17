@@ -4,14 +4,33 @@
 @import "variables.less";
 @import "../assets/fonts/maisonneue/stylesheet";
 
-.container() {
-    @import "loading.less";
-    font-family: 'maisonneue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+.fonts() {
     font-weight: 400;
     font-size: 13px;
     line-height: 1.4;
-    border-radius: 14px;
     color: #333;
+
+    strong {
+        font-weight: bold !important;
+    }
+
+    em {
+        font-style: italic !important;
+    }
+
+    u {
+        text-decoration: underline !important;
+    }
+}
+
+#sk-holder:not(.fa):not(.icon), #sk-holder *:not(.fa):not(.icon) {
+    font-family: 'maisonneue', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+}
+
+.container() {
+    @import "loading.less";
+    .fonts();
+    border-radius: 14px;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-font-smoothing: antialiased;
@@ -68,6 +87,10 @@
     @import "reset.less";
     @import "unread-badge.less";
     @import "messenger-button.less";
+    @import "gorgias-campaigns.less";
+
+    .fonts();
+
     #sk-container {
         position: fixed;
         right: @widget-horizontal-spacing;
