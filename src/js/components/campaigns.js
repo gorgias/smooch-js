@@ -54,17 +54,7 @@ export class CampaignListComponent extends React.Component {
         // We reverse the campaigns order so that new campaigns appear on the top
         const reversedCampaigns = campaigns.reverse();
 
-        return (
-            <div className='campaigns'>
-                <ReactCSSTransitionGroup
-                    transitionName='transition-wrapper'
-                    transitionAppear={true}
-                    transitionAppearTimeout={800}
-                    transitionEnterTimeout={200}
-                    transitionLeaveTimeout={200}
-                >
-                    {
-                        reversedCampaigns.length && (
+        const campaignsWrapper = reversedCampaigns.length > 0 ? (
                             <div
                                 className='campaign'
                                 onClick={() => this._replyToCampaign()}
@@ -100,8 +90,18 @@ export class CampaignListComponent extends React.Component {
                                     Click to reply
                                 </div>
                             </div>
-                        )
-                    }
+                        ) : null
+
+        return (
+            <div className='campaigns'>
+                <ReactCSSTransitionGroup
+                    transitionName='transition-wrapper'
+                    transitionAppear={true}
+                    transitionAppearTimeout={800}
+                    transitionEnterTimeout={200}
+                    transitionLeaveTimeout={200}
+                >
+                    {campaignsWrapper}
                 </ReactCSSTransitionGroup>
             </div>
         );
