@@ -55,42 +55,42 @@ export class CampaignListComponent extends React.Component {
         const reversedCampaigns = campaigns.reverse();
 
         const campaignsWrapper = reversedCampaigns.length > 0 ? (
-                            <div
-                                className='campaign'
-                                onClick={() => this._replyToCampaign()}
-                            >
-                                {
-                                    reversedCampaigns.map((campaign) => {
-                                        if (_isEmpty(campaign.message.author) && displayAgents.length) {
-                                            campaign.message.author = displayAgents[0];
-                                        }
+            <div
+                className='campaign'
+                onClick={() => this._replyToCampaign()}
+            >
+                {
+                    reversedCampaigns.map((campaign) => {
+                        if (_isEmpty(campaign.message.author) && displayAgents.length) {
+                            campaign.message.author = displayAgents[0];
+                        }
 
-                                        const authorAvatarUrl = campaign.message.author ? campaign.message.author.avatar_url : '';
-                                        const authorName = campaign.message.author ? campaign.message.author.name : '';
+                        const authorAvatarUrl = campaign.message.author ? campaign.message.author.avatar_url : '';
+                        const authorName = campaign.message.author ? campaign.message.author.name : '';
 
-                                        return (
-                                                <div
-                                                    key={campaign.id}
-                                                    className='message-area'
-                                                >
-                                                    <div className='avatar'>
-                                                        <img src={authorAvatarUrl}/>
-                                                    </div>
-                                                    <div className='message'>
-                                                        <div className='author-name'>
-                                                            {authorName}
-                                                        </div>
-                                                        <div dangerouslySetInnerHTML={{__html: campaign.message.html}}/>
-                                                    </div>
-                                                </div>
-                                        );
-                                    })
-                                }
-                                <div className='reply-area'>
-                                    Click to reply
+                        return (
+                                <div
+                                    key={campaign.id}
+                                    className='message-area'
+                                >
+                                    <div className='avatar'>
+                                        <img src={authorAvatarUrl}/>
+                                    </div>
+                                    <div className='message'>
+                                        <div className='author-name'>
+                                            {authorName}
+                                        </div>
+                                        <div dangerouslySetInnerHTML={{__html: campaign.message.html}}/>
+                                    </div>
                                 </div>
-                            </div>
-                        ) : null
+                        );
+                    })
+                }
+                <div className='reply-area'>
+                    Click to reply
+                </div>
+            </div>
+        ) : null
 
         return (
             <div className='campaigns'>
