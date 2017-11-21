@@ -193,11 +193,8 @@ class Message extends Component {
                   </div> ;
         }
 
-        return (
-            <div className={rowClass.join(' ')}>
-                {firstInGroup ? avatar : avatarPlaceHolder}
+        const innerMessage = (
                 <div className='sk-msg-wrapper'>
-                    {!isAppUser && firstInGroup ? fromName : null}
                     <div className={containerClasses.join(' ')}
                          style={style}
                          ref='messageContent'
@@ -211,6 +208,21 @@ class Message extends Component {
                     </div>
                     {sendStatus === SEND_STATUS.FAILED ? clickToRetry : null}
                 </div>
+        )
+
+        // If the message is first in group, we wanna have an additional `display: inline-block` wrapper
+        // to prevent the message's width to match the width of the agent's name.
+        const subComponent = firstInGroup && !isAppUser ? (
+            <div style={{display: 'inline-block'}}>
+                {fromName}
+                {innerMessage}
+            </div>
+        ) : innerMessage
+
+        return (
+            <div className={rowClass.join(' ')}>
+                {firstInGroup ? avatar : avatarPlaceHolder}
+                {subComponent}
                 <div className='sk-clear'/>
             </div>
         );
