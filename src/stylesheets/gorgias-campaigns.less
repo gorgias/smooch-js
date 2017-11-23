@@ -6,6 +6,7 @@
 
   font-size: 15px;
   color: @sk-darker-grey;
+  z-index: @chat-z-index - 1 !important;  // one less than the global container, so that it's always below it
 
   .widget-size();
 

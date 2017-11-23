@@ -1,6 +1,6 @@
 #sk-messenger-button {
     position: fixed;
-    background: #3f6ad3;
+    background: #116efa;
 
     .fa-times {
         color: white;
@@ -17,7 +17,7 @@
     border-radius: 50%;
 
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26);
-    z-index: 9998; // 1 less than Stripe Checkout
+    z-index: @chat-z-index - 1 !important;  // one less than the global container, so that it's below it in mobile mode
 
     cursor: pointer;
     transform-origin: bottom;
@@ -50,6 +50,9 @@
         margin-top: 50%;
         -webkit-transform: translate(-50%, -50%);
                 transform: translate(-50%, -50%);
+
+        border-radius: 100px;
+        box-shadow: 0 13px 26px 0 rgba(0,0,0,0.20);
     }
 
     .messenger-button-icon {
