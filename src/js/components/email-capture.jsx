@@ -74,8 +74,8 @@ class EmailCaptureComponent extends Component {
                     <input
                         placeholder={placeholder}
                         onChange={(e) => this.setState({email: e.target.value})}
-                        type="email"
-                        pattern='^[\w\.\-\+]+@[\w\.\-]+\.\w+$'
+                        type='email'
+                        pattern="^[\w\-\+=\']+[\w\.\-\+=\']*@[\w\.\-]+\.\w+$"
                     />
                     <button type='submit'>
                         <i className='fa fa-paper-plane-o'/>

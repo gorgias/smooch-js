@@ -282,7 +282,7 @@ export function computeDisplayedCampaigns() {
 
         const context = {
             timeSpentOnPage: state.appState.timeSpentOnPage,
-            currentUrl: window.location.href.replace('http://', '').replace('https://', '')
+            currentUrl: window.location.href
         };
 
         campaigns.forEach((campaign) => {
