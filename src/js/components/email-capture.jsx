@@ -75,7 +75,8 @@ class EmailCaptureComponent extends Component {
                         placeholder={placeholder}
                         onChange={(e) => this.setState({email: e.target.value})}
                         type='email'
-                        pattern="^[\w\-\+=\']+[\w\.\-\+=\']*@[\w\.\-]+\.\w+$"
+                        // escaped singlequotes mark the regex as invalid, that's why we use the codes &#39; instead
+                        pattern="^[\w\-\+=&#39;]+[\w\.\-\+=&#39;]*@[\w\.\-]+\.\w+$"
                     />
                     <button type='submit'>
                         <i className='fa fa-paper-plane-o'/>
