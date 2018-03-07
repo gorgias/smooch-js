@@ -4,7 +4,7 @@ import bindAll from 'lodash.bindall';
 
 import { toggleWidget } from '../services/app';
 import { Introduction } from './introduction';
-import {DefaultCloseIcon} from "./default-close-icon";
+import {DefaultCloseIcon} from './default-close-icon';
 
 export class HeaderComponent extends Component {
 
